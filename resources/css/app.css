@@ -1,0 +1,8 @@
+@import 'main.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*@import '../assets/libs/tobii/css/tobii.min.css';*/
+/*@import '../assets/libs/@mdi/font/css/materialdesignicons.min.css';*/

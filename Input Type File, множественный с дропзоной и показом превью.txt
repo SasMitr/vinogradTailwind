@@ -1,0 +1,187 @@
+<div id="file-dropzone">
+   <p>Перетащите сюда файлы или кликните, чтобы выбрать</p>
+   <input
+	type="file"
+	id="file-input"
+	name="MORE_PHOTO[]"
+	multiple
+	>
+</div>
+<div id="preview-container"></div>
+
+
+#file-dropzone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+#file-dropzone input {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 30px;
+  opacity: 0;
+}
+#file-dropzone span {
+  cursor: pointer;
+}
+
+#preview-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.preview-image {
+  width: 80px;
+  border-radius: var(--radius1);
+  height: 80px;
+  overflow: hidden;
+  position: relative;
+  background: #f6f6f6;
+  display: flex;
+  align-items: center;
+  transition: var(--animation1);
+}
+.preview-image img {
+  object-fit: cover;
+  object-position: center;
+}
+.preview-image:after {
+  content: "X";
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.4);
+  color: #333333;
+  border-radius: 100%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
+  display: flex;
+  font-size: 30px;
+  justify-content: center;
+  align-items: center;
+  transition: var(--animation1);
+  cursor: pointer;
+}
+.preview-image:after:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+#preview-container {
+  position: relative;
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+    const fileDropzone = document.getElementById('file-dropzone');
+    const previewImages = [];
+
+    function displayExistingImages() {
+        existingImages.forEach(function (imageUrl) {
+            addPreviewImage(imageUrl);
+        });
+    }
+
+    function addPreviewImage(imageUrl) {
+        // Проверяем, есть ли изображение с таким URL уже в превью
+        const existingImage = previewImages.find(image => image.querySelector('img').src === imageUrl);
+        if (!existingImage) {
+            const previewImageDiv = createPreviewImageDiv(imageUrl);
+            previewContainer.appendChild(previewImageDiv);
+            previewImages.push(previewImageDiv);
+        }
+    }
+
+    function createPreviewImageDiv(imageUrl) {
+        const previewImageDiv = document.createElement('div');
+        previewImageDiv.classList.add('preview-image');
+
+        const img = document.createElement('img');
+        img.src = imageUrl;
+
+        previewImageDiv.appendChild(img);
+
+        previewImageDiv.addEventListener('click', function () {
+            previewImageDiv.remove();
+            const index = previewImages.indexOf(previewImageDiv);
+            if (index > -1) {
+                previewImages.splice(index, 1);
+                const fileToRemove = fileInput.files[index];
+                const updatedFiles = Array.from(fileInput.files);
+                updatedFiles.splice(index, 1);
+                fileInput.files = new FileList(updatedFiles);
+            }
+            const indexExisting = existingImages.indexOf(imageUrl);
+            if (indexExisting > -1) {
+                existingImages.splice(indexExisting, 1);
+            }
+        });
+
+        return previewImageDiv;
+    }
+
+    displayExistingImages();
+
+    fileInput.addEventListener('change', function () {
+        const files = this.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    addPreviewImage(e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    fileDropzone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        fileDropzone.classList.add('dragover');
+    });
+
+    fileDropzone.addEventListener('dragleave', function () {
+        fileDropzone.classList.remove('dragover');
+    });
+
+    fileDropzone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        fileDropzone.classList.remove('dragover');
+
+        const newFiles = e.dataTransfer.files;
+        const mergedFiles = mergeFileLists(fileInput.files, newFiles);
+
+        const newFileList = new DataTransfer();
+        for (let i = 0; i < mergedFiles.length; i++) {
+            newFileList.items.add(mergedFiles[i]);
+        }
+
+        fileInput.files = newFileList.files;
+
+        const changeEvent = new Event('change');
+        fileInput.dispatchEvent(changeEvent);
+    });
+
+    function mergeFileLists(existingFiles, newFiles) {
+        const mergedFiles = [];
+        if (existingFiles) {
+            for (let i = 0; i < existingFiles.length; i++) {
+                mergedFiles.push(existingFiles[i]);
+            }
+        }
+        for (let i = 0; i < newFiles.length; i++) {
+            mergedFiles.push(newFiles[i]);
+        }
+        return mergedFiles;
+    }
+});
