@@ -17,7 +17,7 @@
     {{--    <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}">--}}
     {{--    <link rel="shortcut icon" href="{{Storage::url('pics/img/logo/logo.svg')}}">--}}
     {{ Vite::useBuildDirectory('/build/web') }}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/web/css/app.css', 'resources/web/js/app.js'])
 
 </head>
 

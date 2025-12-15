@@ -19,7 +19,7 @@ class ProductViewModel extends ViewModel
         return $this->product->load('modifications.property:id,name');
     }
 
-    public function contents(): array
+    public function contents(): array|null
     {
         return cache()->get($this->product->classNameByIDForCache());
     }

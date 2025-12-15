@@ -1,5 +1,5 @@
-import * as info from './components/handlerErrors.js';
-import * as responce from './components/resources';
+import * as info from '../../../common/handlerErrors.js';
+import * as responce from '../../../common/resources';
 import cart from '../modules/cart';
 import compare from '../modules/compare';
 

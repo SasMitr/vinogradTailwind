@@ -1,5 +1,5 @@
-import * as responce from "@/modules/components/resources.js";
-import * as toastr from "@/modules/components/toastr.js";
+import * as responce from "../../../../../common/resources.js";
+import * as toastr from "../../../../../common/toastr.js";
 
 function updateModificationForProduct(form) {
 

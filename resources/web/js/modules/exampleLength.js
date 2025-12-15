@@ -1,5 +1,5 @@
-import * as responce from "./components/resources";
-import * as info from "./components/handlerErrors.js";
+import * as responce from "../../../common/resources";
+import * as info from "../../../common/handlerErrors.js";
 
 function exampleLength () {
     const e = document.querySelector("select[name=example_length]");

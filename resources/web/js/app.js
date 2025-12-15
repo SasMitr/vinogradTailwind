@@ -1,5 +1,5 @@
-import feather from 'feather-icons';
-feather.replace();
+//import feather from 'feather-icons';
+//feather.replace();
 
 // import './bootstrap';
 

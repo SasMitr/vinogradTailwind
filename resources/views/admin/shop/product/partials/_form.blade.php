@@ -188,7 +188,7 @@
                         id="choices-multiple-remove-button">
                     <option value="">Выбрать похожие сорта</option>
                     @foreach($products as $id => $name)
-                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && $product->props['similar'] !=null) ? $product->props['similar'] : [])))>{{$name}}</option>
+                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && isset($product->props['similar']) && $product->props['similar'] !=null) ? $product->props['similar'] : [])))>{{$name}}</option>
                     @endforeach
                 </select>
             </div>

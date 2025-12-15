@@ -1,5 +1,5 @@
-import * as responce from "@/modules/components/resources.js";
-import * as toastr from "@/modules/components/toastr.js";
+import * as responce from "../../../common/resources.js";
+import * as toastr from "../../../common/toastr.js";
 import create from "./shop/product/create.js";
 import edit from "./shop/product/edit.js";
 import addModificationForProduct from "./shop/modification/addModificationForProduct.js";

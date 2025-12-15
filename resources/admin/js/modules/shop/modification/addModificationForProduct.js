@@ -1,6 +1,6 @@
-import * as responce from "@/modules/components/resources.js";
-import * as toastr from "@/modules/components/toastr.js";
-import * as handler from "@/modules/components/handlerErrors.js";
+import * as responce from "../../../../../common/resources.js";
+import * as toastr from "../../../../../common/toastr.js";
+import * as handler from "../../../../../common/handlerErrors.js";
 
 function addModificationForProduct(modal) {
     let form = modal.querySelector('form');

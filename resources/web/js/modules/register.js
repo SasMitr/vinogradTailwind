@@ -1,22 +1,25 @@
-import * as responce from "./components/resources";
-import * as handler from "./components/handlerErrors.js";
+import * as response from "../../../common/resources";
+import * as handler from "../../../common/handlerErrors";
 
-function login(data) {
+function register(modal) {
+
     try {
-        let form = data.querySelector('form');
+        let form = modal.querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const url = form.getAttribute('action');
             const formData = new FormData(form);
 
-            responce.post(url, formData)
+            response.post(url, formData)
                 .then(data => {
-                    if(data.success) {
-                        window.location.reload();
+                    if(data.body) {
+                        modal.querySelector('#modal-body').innerHTML = data.body;
+                        modal.querySelector('#modal-header').innerHTML = data.header;
 
                     } else if(data.errors){
 
+                        handler.errorFormField('name', data.errors.name, form);
                         handler.errorFormField('email', data.errors.email, form);
                         handler.errorFormField('password', data.errors.password, form);
 
@@ -30,4 +33,4 @@ function login(data) {
     }
     catch (e) {}
 }
-export default login;
+export default register;

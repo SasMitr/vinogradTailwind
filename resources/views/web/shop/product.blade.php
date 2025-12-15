@@ -6,6 +6,7 @@
             <div class="grid md:grid-cols-5 grid-cols-1 gap-6 items-center">
 
                 <div class="col-span-3">
+                    @if(count($product->getGallery('500x650')) > 1)
                     <ul class="product-imgs flex list-none items-center">
                         <li>
                             <ul class="img-select list-none">
@@ -36,6 +37,9 @@
                             </div>
                         </li>
                     </ul>
+                    @else
+                        <img src="{{asset($product->getImage('500x650'))}}" class="min-w-full" alt="shoe image">
+                    @endif
                 </div>
 
                 <div  class="col-span-2">
