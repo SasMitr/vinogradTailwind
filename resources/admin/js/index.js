@@ -1,6 +1,7 @@
 import modal from "./modules/modal.js";
 import toggleStatus from "./modules/shop/product/toggleStatus.js";
-import updateModificationForProduct from "./modules/shop/modification/updateModificationForProduct.js";
+import updateModificationForProduct from "./modules/shop/product-modification/updateModificationForProduct.js";
+import m_remove from "./modules/shop/modification/m_remove.js";
 
 window.addEventListener('DOMContentLoaded', function() {
     let content = document.querySelector('#admin-content');
@@ -23,6 +24,11 @@ window.addEventListener('DOMContentLoaded', function() {
             if (content.contains(element)) {
                 e.preventDefault();
                 toggleStatus(element);
+            }
+        } else if( (element = e.target.closest('.remove_modification')) ) {
+            if (content.contains(element)) {
+                e.preventDefault();
+                m_remove(element);
             }
         }
 

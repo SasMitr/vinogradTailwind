@@ -69,12 +69,12 @@ class Product extends Model
 
     public function modifications()
     {
-        return $this->hasMany(Modification::class)->where('quantity', '>', 0);
+        return $this->hasMany(ModificationProduct::class)->where('quantity', '>', 0);
     }
 
     public function adminModifications()
     {
-        return $this->hasMany(Modification::class);
+        return $this->hasMany(ModificationProduct::class);
     }
 
 //----------- scope --------------------
@@ -243,7 +243,7 @@ class Product extends Model
 
     public function canBeCheckout($modificationId, $quantity): bool
     {
-        $modification = Modification::find($modificationId);
+        $modification = ModificationProduct::find($modificationId);
         return $quantity <= $modification->quantity;
 //        return $quantity <= $this->getModification($modificationId)->quantity;
     }
@@ -271,7 +271,7 @@ class Product extends Model
                 return $modification;
             }
         }
-        throw new \DomainException('Modification is not found.');
+        throw new \DomainException('ModificationProduct is not found.');
     }
 
     public function getModificationPrice($id)
@@ -281,7 +281,7 @@ class Product extends Model
                 return $modification->price;
             }
         }
-        throw new \DomainException('Modification is not found.');
+        throw new \DomainException('ModificationProduct is not found.');
     }
 
     public function StrLimit($str, $limit)

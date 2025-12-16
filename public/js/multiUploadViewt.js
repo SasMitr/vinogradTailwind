@@ -116,7 +116,7 @@ $(function() {
                         //$("#product_" + product_id).replaceWith(data.succes);
                         $(data.succes).appendTo("#product_" + product_id);
                     } else {
-                        $(data.succes).appendTo('.modification');
+                        $(data.succes).appendTo('.product-modification-product');
                     }
                     $('#modificationModal').modal('hide');
                 }
@@ -139,7 +139,7 @@ $(function() {
     });
 });
 
-$(document).on("click", ".modification-update", function(e) {
+$(document).on("click", ".product-modification-product-update", function(e) {
 
     var parent = $(this).parents('.form-group');
     var price = parent.find('input[name="price"]').val();
@@ -157,7 +157,7 @@ $(document).on("click", ".modification-update", function(e) {
         },
         success: function (data) {
             if(data.succes) {
-                //console.log(data.modification)
+                //console.log(data.product-modification-product)
                 $("#modification_" + modification_id + "_quantity").text(data.modification.quantity);
                 $("#modification_" + modification_id + "_in_stock").text(data.modification.in_stock);
                 $("#modification_" + modification_id + '_price').text(data.modification.price);
@@ -177,7 +177,7 @@ $(document).on("click", ".modification-update", function(e) {
     return false;
 });
 
-$(document).on("click", ".modification-remove", function(e) {
+$(document).on("click", ".product-modification-product-remove", function(e) {
 
     var parent = $(this).parents('.input-group');
     var modification_id = parent.children('input[name="modification_id"]').val();

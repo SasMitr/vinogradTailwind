@@ -10,19 +10,10 @@ class ProductToggleStatusController extends Controller
 {
     public function __invoke(Request $request, $product_id)
     {
-        try {
-            if(!$product = Product::query()->find($product_id)) {
-                throw new \Exception('Неверные входные параметры');
-            };
-            $product->toggledsStatus();
-
-            return ['success' => [
-                    'id' => $product_id
-                ]
-            ];
-        }
-        catch (\Exception $e) {
-            return ['errors' => $e->getMessage()];
-        }
+        if(!$product = Product::query()->find($product_id)) {
+            return ['errors' => 'Неверные входные параметры'];
+        };
+        $product->toggledsStatus();
+        return ['success' => [ 'id' => $product_id ]];
     }
 }

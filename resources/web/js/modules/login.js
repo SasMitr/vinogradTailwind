@@ -1,5 +1,5 @@
-import * as responce from "../../../common/resources";
-import * as handler from "../../../common/handlerErrors.js";
+import * as responce from "./components/resources";
+import * as handler from "./components/handlerErrors.js";
 
 function login(data) {
     try {

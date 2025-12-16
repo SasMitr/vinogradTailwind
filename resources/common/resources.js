@@ -10,6 +10,7 @@ export async function get(url, data = false) {
 }
 
 export async function post (url, data) {
+    data.set('_token', document.querySelector('meta[name="csrf-token"]').content);
     let res = await fetch(url, {
         method: "POST",
         headers: {'X-Requested-With': 'XMLHttpRequest'},

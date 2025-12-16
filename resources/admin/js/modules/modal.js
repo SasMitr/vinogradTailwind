@@ -1,8 +1,15 @@
-import * as responce from "../../../common/resources.js";
-import * as toastr from "../../../common/toastr.js";
+//import * as responce from "@/modules/components/resources.js";
+//import * as toastr from "@/modules/components/toastr.js";
+import * as responce from "#/common/resources.js";
+import * as toastr from "#/common/toastr.js";
+
 import create from "./shop/product/create.js";
 import edit from "./shop/product/edit.js";
-import addModificationForProduct from "./shop/modification/addModificationForProduct.js";
+
+import m_create from "./shop/modification/m_create.js";
+import m_edit from "./shop/modification/m_edit.js";
+
+import addModificationForProduct from "./shop/product-modification/addModificationForProduct.js";
 
 function modal(element) {
 
@@ -27,6 +34,12 @@ function modal(element) {
                             break;
                         case 'addModificationForProduct':
                             addModificationForProduct(modal);
+                            break;
+                        case 'm_create':
+                            m_create(modal);
+                            break;
+                        case 'm_edit':
+                            m_edit(modal);
                             break;
                     }
 

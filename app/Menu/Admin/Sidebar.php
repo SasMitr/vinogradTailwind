@@ -30,7 +30,7 @@ class Sidebar
                 'dashboard' => [
                     'Аналитика' => [
                         'Сорта' => route('admin.dashboard.index'),
-                        'Модификации' => route('admin.dashboard.modification'),
+                        'Модификации' => route('admin.dashboard.product-modification-product'),
                         'Заказано' => route('admin.dashboard.ordered'),
                         'Всплывашки' => route('admin.dashboard.toastr'),
                         'Доставка' => 'https://tailwind/admins'
@@ -39,7 +39,7 @@ class Sidebar
                 'catalog' => [
                     'Виноград' => [
                         'Каталог' => route('admin.product.index'),
-                        'Модификации' => 'https://tailwind/admins',
+                        'Модификации' => route('admin.modification.index'),
                         'Категории' => route('admin.category.index'),
                         'Комментарии' => route('admin.product.comment.index'),
                         'Слайдер' => 'https://tailwind/admins',

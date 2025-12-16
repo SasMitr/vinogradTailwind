@@ -1,5 +1,5 @@
-import * as responce from "../../../../../common/resources.js";
-import * as toastr from "../../../../../common/toastr.js";
+import * as responce from "#/common/resources.js";
+import * as toastr from "#/common/toastr.js";
 
 function toggleStatus(item) {
     try {

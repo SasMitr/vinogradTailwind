@@ -1,4 +1,4 @@
-import * as responce from '../../../common/resources.js'
+import * as responce from '../../../common/resources'
 
 function test() {
     Alpine.data("mysubmit", () => ({

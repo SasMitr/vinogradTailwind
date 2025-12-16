@@ -1,4 +1,4 @@
-import * as responce from '../../../common/resources.js';
+import * as responce from './components/resources';
 import login from "./login";
 import register from "./register";
 

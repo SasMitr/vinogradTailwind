@@ -1,5 +1,5 @@
-import * as response from "../../../common/resources";
-import * as handler from "../../../common/handlerErrors";
+import * as response from "./components/resources";
+import * as handler from "./components/handlerErrors";
 
 function register(modal) {
 

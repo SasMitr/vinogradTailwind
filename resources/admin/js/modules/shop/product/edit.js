@@ -1,6 +1,6 @@
-import * as responce from "../../../../../common/resources.js";
-import * as handler from "../../../../../common/handlerErrors.js";
-import * as toastr from "../../../../../common/toastr.js";
+import * as responce from "#/common/resources.js";
+import * as handler from "#/common/handlerErrors.js";
+import * as toastr from "#/common/toastr.js";
 import * as helper from "./helpers.js";
 import removeGalleryImages from "./removeGalleryImages.js";
 
@@ -14,7 +14,7 @@ function edit(modal) {
 
         let form = modal.querySelector('form');
         const url = form.getAttribute('action');
-        const id = form.getAttribute('data-product-id');
+        const id = form.getAttribute('data-id');
 
         helper.previewUploadImg(form, '#image', '#image_preview');
         helper.previewMultyUploadImg(form);

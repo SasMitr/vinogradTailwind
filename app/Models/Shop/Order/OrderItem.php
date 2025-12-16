@@ -2,7 +2,7 @@
 
 namespace App\Models\Shop\Order;
 
-use App\Models\Shop\Modification;
+use App\Models\Shop\ModificationProduct;
 use App\Models\Shop\Product;
 use App\UseCases\OrderService;
 use Illuminate\Database\Eloquent\Model;
@@ -20,10 +20,10 @@ class OrderItem extends Model
 
     public function modification()
     {
-        return $this->belongsTo(Modification::class);
+        return $this->belongsTo(ModificationProduct::class);
     }
 
-    public static function create($order_id, Modification $modification, $price, $quantity)
+    public static function create($order_id, ModificationProduct $modification, $price, $quantity)
     {
         $item = new static;
         $item->order_id = $order_id;

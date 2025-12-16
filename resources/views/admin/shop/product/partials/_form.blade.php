@@ -1,10 +1,18 @@
-<form action="{{isset($product) ? route('admin.product.update', $product) : route('admin.product.create')}}"
-      data-modules="{{isset($product) ? 'edit' : 'create'}}"
-      data-product-id="{{isset($product) ? $product->id : null}}"
-      method="POST" enctype="multipart/form-data"
->
-    @csrf
-    @method('patch')
+{{--<form action="{{isset($product) ? route('admin.product.update', $product) : route('admin.product.create')}}"--}}
+{{--      data-modules="{{isset($product) ? 'edit' : 'create'}}"--}}
+{{--      data-product-id="{{isset($product) ? $product->id : null}}"--}}
+{{--      method="POST"--}}
+{{--      enctype="multipart/form-data"--}}
+{{-->--}}
+{{--    @csrf--}}
+{{--    @method('patch')--}}
+<x-admin.forms.form>
+
+    <x-slot:route>{{isset($product) ? route('admin.product.update', $product) : route('admin.product.create')}}</x-slot>
+    <x-slot:modules>{{isset($product) ? 'edit' : 'create'}}</x-slot>
+    <x-slot:id>{{isset($product) ? $product->id : null}}</x-slot>
+    <x-slot:method>patch</x-slot>
+
     <div x-data="{ current: 5 }" class="border border-gray-200 divide-y divide-gray-200">
 
         <x-admin.shop.product.accordion-item>
@@ -188,7 +196,7 @@
                         id="choices-multiple-remove-button">
                     <option value="">Выбрать похожие сорта</option>
                     @foreach($products as $id => $name)
-                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && isset($product->props['similar']) && $product->props['similar'] !=null) ? $product->props['similar'] : [])))>{{$name}}</option>
+                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && $product->props['similar'] !=null) ? $product->props['similar'] : [])))>{{$name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -244,8 +252,7 @@
 
     </div>
 
-    <button type="submit" class="p-2 mt-5 border text-blue-400 border-blue-300 transition-all duration-300 hover:bg-blue-300 hover:text-white">
-        Сохранить
-    </button>
+    <x-admin.forms.button text="{{isset($product) ? 'Сохранить' : 'Добавить'}}" />
 
-</form>
+</x-admin.forms.form>
+{{--</form>--}}

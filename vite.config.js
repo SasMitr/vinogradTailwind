@@ -1,17 +1,15 @@
 import { defineConfig } from 'vite';
-import laravel, {refreshPaths} from 'laravel-vite-plugin';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/web/css/app.css',
-                'resources/web/js/app.js'
+               'resources/web/css/app.css',
+               'resources/web/js/app.js'
             ],
-            refresh: [
-                ...refreshPaths,
-            ],
+            refresh: true,
             buildDirectory: '/build/web',
-        })
+        }),
     ],
 });

@@ -14,4 +14,9 @@ export default defineConfig({
             buildDirectory: '/build/admin',
         }),
     ],
+    resolve: {
+        alias: {
+            '#': '/resources',
+        },
+    },
 });

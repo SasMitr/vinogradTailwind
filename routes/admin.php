@@ -10,8 +10,13 @@ use App\Http\Controllers\Admin\Shop\Dashboard\DashboardModificationController;
 use App\Http\Controllers\Admin\Shop\Dashboard\DashboardOrderedController;
 use App\Http\Controllers\Admin\Shop\Dashboard\DashboardToastrController;
 use App\Http\Controllers\Admin\Shop\Messages\MessegesIndexController;
-use App\Http\Controllers\Admin\Shop\Modification\AddModificationForProductController;
-use App\Http\Controllers\Admin\Shop\Modification\UpdateModificationForProductController;
+use App\Http\Controllers\Admin\Shop\Modification\CreateModificationController;
+use App\Http\Controllers\Admin\Shop\Modification\IndexModificationController;
+use App\Http\Controllers\Admin\Shop\Modification\RemoveModificationController;
+use App\Http\Controllers\Admin\Shop\Modification\UpdateModificationController;
+use App\Http\Controllers\Admin\Shop\ModificationProduct\AddModificationProductController;
+use App\Http\Controllers\Admin\Shop\ModificationProduct\CreateModificationProductController;
+use App\Http\Controllers\Admin\Shop\ModificationProduct\UpdateModificationProductController;
 use App\Http\Controllers\Admin\Shop\Order\OrderIndexController;
 use App\Http\Controllers\Admin\Shop\Product\ProductCommentsIndexController;
 use App\Http\Controllers\Admin\Shop\Product\ProductCreateController;
@@ -27,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::as('dashboard.')->prefix('dashboard')->group(function (){
     Route::get('/sorts', DashboardIndexController::class)->name('index');
-    Route::get('/modification', DashboardModificationController::class)->name('modification');
+    Route::get('/product-modification-product', DashboardModificationController::class)->name('product-modification-product');
     Route::get('/ordered', DashboardOrderedController::class)->name('ordered');
     Route::get('/toastr', DashboardToastrController::class)->name('toastr');
 });
@@ -53,11 +58,21 @@ Route::as('product.')->prefix('product')->group(function () {
 });
 
 Route::as('modification.')->prefix('modification')->group(function () {
-    Route::get('/add-for-product/{product_id}', [AddModificationForProductController::class, 'show'])->name('create.for.product.show');
-    Route::patch('/add-for-product', [AddModificationForProductController::class, 'create'])->name('create.for.product');
+    Route::get('/', IndexModificationController::class)->name('index');
 
-    Route::post('/update-for-product/{modification_id}', UpdateModificationForProductController::class)->name('update.for.product');
+    Route::get('/create', [CreateModificationController::class, 'form'])->name('create.form');
+    Route::patch('/create', [CreateModificationController::class, 'create'])->name('create');
 
+    Route::get('/update/{modification}', [UpdateModificationController::class, 'form'])->name('update.form');
+    Route::patch('/update/{modification}', [UpdateModificationController::class, 'update'])->name('update');
+
+    Route::delete('/remove/{modification}', RemoveModificationController::class)->name('remove');
+});
+
+Route::as('modification-product.')->prefix('modification-product')->group(function () {
+    Route::get('/add-for-product/{product_id}', AddModificationProductController::class)->name('create.for.product.show');
+    Route::patch('/create-for-product', CreateModificationProductController::class)->name('create.for.product');
+    Route::post('/update-for-product/{modification_id}', UpdateModificationProductController::class)->name('update.for.product');
 });
 
 Route::as('category.')->prefix('category')->group(function () {

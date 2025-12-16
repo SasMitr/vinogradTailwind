@@ -1,4 +1,4 @@
-import * as responce from '../../../common/resources'
+import * as responce from './components/resources'
 
 function cart() {
 

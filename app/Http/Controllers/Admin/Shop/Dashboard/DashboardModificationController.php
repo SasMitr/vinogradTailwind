@@ -8,6 +8,6 @@ class DashboardModificationController extends Controller
 {
     public function __invoke(): string
     {
-        return view('admin.shop.dashboard.modification');
+        return view('admin.shop.dashboard.product-modification-product');
     }
 }

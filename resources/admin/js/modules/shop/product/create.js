@@ -1,6 +1,6 @@
-import * as responce from "../../../../../common/resources.js";
-import * as handler from "../../../../../common/handlerErrors.js";
-import * as toastr from "../../../../../common/toastr.js";
+import * as responce from "#/common/resources.js";
+import * as handler from "#/common/handlerErrors.js";
+import * as toastr from "#/common/toastr.js";
 import * as helper from "./helpers.js";
 
 function create(modal) {
