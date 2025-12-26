@@ -6,7 +6,9 @@
             <div class="grid md:grid-cols-5 grid-cols-1 gap-6 items-center">
 
                 <div class="col-span-3">
+
                     <ul class="product-imgs flex list-none items-center">
+                        @if($product->getGallery('500x650'))
                         <li>
                             <ul class="img-select list-none">
                                 <li class="p-px">
@@ -35,6 +37,13 @@
                                 @endforeach
                             </div>
                         </li>
+                        @else
+                            <li class="img-display shadow m-px">
+                                <div class="img-showcase flex w-full duration-500" style="transform: translateX(0px);">
+                                    <img src="{{asset($product->getImage('500x650'))}}" class="min-w-full" alt="shoe image">
+                                </div>
+                            </li>
+                        @endif
                     </ul>
                 </div>
 

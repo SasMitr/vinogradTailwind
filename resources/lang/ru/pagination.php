@@ -12,4 +12,5 @@ return [
     */
     'previous' => '&laquo; Назад',
     'next' => 'Вперёд &raquo;',
+    'showing' => 'Показано'
 ];

@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\Shop\Product\ProductRemoveImgGallery;
 use App\Http\Controllers\Admin\Shop\Product\ProductResetCatalogController;
 use App\Http\Controllers\Admin\Shop\Product\ProductToggleStatusController;
 use App\Http\Controllers\Admin\Shop\Product\ProductUpdateController;
+use App\Http\Controllers\Admin\Shop\User\UsersIndexController;
 use Illuminate\Support\Facades\Route;
 
 // prefix('admin')
@@ -91,6 +92,10 @@ Route::as('order.')->prefix('order')->group(function () {
 
 Route::as('messages.')->prefix('messages')->group(function () {
     Route::get('/', MessegesIndexController::class)->name('index');
+});
+
+Route::as('users.')->prefix('users')->group(function () {
+    Route::get('/', UsersIndexController::class)->name('index');
 });
 
 Route::as('ckeditor.')->prefix('ckeditor')->group(function () {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\UserActive;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->as('shop.')
                 ->group(base_path('routes/shop.php'));
 
-            Route::middleware(['web', 'auth', 'verified'])
+            Route::middleware(['web', UserActive::class])
                 ->prefix('cabinet')
                 ->as('cabinet.')
                 ->name('cabinet.')

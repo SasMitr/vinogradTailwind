@@ -3,3 +3,5 @@
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('queue:work --stop-when-empty --tries=5')->everyMinute();
+
+Schedule::command('model:prune')->monthly();

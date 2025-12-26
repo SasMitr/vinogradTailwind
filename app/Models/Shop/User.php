@@ -4,6 +4,7 @@ namespace App\Models\Shop;
 
 use App\Models\Blog\Post;
 use App\Models\Shop\Order\Order;
+use App\Services\UserService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Support\Facades\Storage;
@@ -16,13 +17,15 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use MassPrunable;
 
-    const IS_BANNED = 1;
-    const IS_ACTIVE = 0;
+
+    const IS_BANNED = 0;
+    const IS_ACTIVE = 1;
+    const IS_ADMIN = 3;
 
 //    public $timestamps = false;
 
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'role'
     ];
 
     protected $hidden = [
@@ -38,14 +41,37 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-     * Get the prunable model query.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function prunable()
+     public function prunable()
     {
-        return static::where('remember_token',  null)->delete();
+        return static::where('role', 0)->where('created_at', '<=', now()->subMonth());
+    }
+
+    public function roles() :array
+    {
+        return [
+            self::IS_BANNED => 'Banned',
+            self::IS_ACTIVE => 'Active',
+            self::IS_ADMIN => 'Admin'
+        ];
+    }
+
+    public function getRole()
+    {
+        return $this->roles()[$this->role];
+    }
+
+    public function colors() :array
+    {
+        return [
+            self::IS_BANNED => 'red',
+            self::IS_ACTIVE => 'green',
+            self::IS_ADMIN => 'purple'
+        ];
+    }
+
+    public function getColor()
+    {
+        return $this->colors()[$this->role];
     }
 
     public function posts()
@@ -68,23 +94,22 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
-    public function isWait()
+    public function isBan()
     {
-        return $this->is_admin === self::IS_BANNED;
+        return $this->role === self::IS_BANNED;
     }
 
     public function isActive()
     {
-        return $this->is_admin === self::IS_ACTIVE;
+        return $this->role === self::IS_ACTIVE;
     }
 
     public function verify()
     {
-        if (!$this->isWait()) {
+        if (!$this->isBan()) {
             throw new \DomainException('Пользователь уже подтвержден.');
         }
-        $this->is_admin = self::IS_ACTIVE;
-        $this->verify_token = null;
+        $this->role = self::IS_ACTIVE;
         $this->save();
     }
 
@@ -93,9 +118,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $user = new static;
         $user->fill($fields);
         $user->password = bcrypt($fields['password']);
-        $user->regdate = time();
-        $user->verify_token = Str::random(20);
-        $user->is_admin = self::IS_BANNED;
+        $user->role = self::IS_BANNED;
         $user->save();
 
         return $user;
@@ -119,44 +142,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function remove()
     {
-        $this->removeAvatar();
+        //$this->removeAvatar();
         $this->delete();
-    }
-
-    public function uploadAvatar($image)
-    {
-        if($image == null) { return; }
-
-        $this->removeAvatar();
-
-        $filename = STR::random(10) . '.' . $image->extension();
-        $image->storeAs('img/avatar/', $filename);
-        $this->avatar = $filename;
-        $this->save();
-    }
-
-    public function removeAvatar()
-    {
-        if($this->avatar != null)
-        {
-            Storage::delete('img/avatar/' . $this->avatar);
-        }
-    }
-
-    public function getImage()
-    {
-        return $this->avatar == null ? '/img/user_default.png' : '/img/avatar/' . $this->avatar;
     }
 
     public function ban()
     {
-        $this->is_admin = User::IS_BANNED;
+        $this->role = User::IS_BANNED;
         $this->save();
     }
 
     public function unban()
     {
-        $this->is_admin = User::IS_ACTIVE;
+        $this->role = User::IS_ACTIVE;
         $this->save();
     }
 

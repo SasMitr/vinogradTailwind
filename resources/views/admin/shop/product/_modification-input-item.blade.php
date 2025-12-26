@@ -1,8 +1,8 @@
 <div class="flex" id="modification_block_{{$product->id}}">
-    <div x-data="{mod_current: null}" class="w-80 border divide-y">
+    <div x-data="{mod_current: null}" class="w-80 border border-r-0 border-gray-300 divide-y divide-gray-300">
     @foreach ($product->adminModifications as $modification)
         <div class="px-2 py-1">
-            <button type="button" class="w-full flex items-center text-gray" :class="{'text-blue-400' : mod_current === {{$loop->iteration}}}" x-on:click="mod_current === {{$loop->iteration}} ? mod_current = null : mod_current = {{$loop->iteration}}">
+            <button type="button" class="w-full flex items-center " :class="mod_current === {{$loop->iteration}} ? 'text-blue-400' : 'text-gray'" x-on:click="mod_current === {{$loop->iteration}} ? mod_current = null : mod_current = {{$loop->iteration}}">
                 <div>
                     {{$modification->property->name}}:
                     <span class="text-red-400">{{$modification->quantity}}</span>/
@@ -16,7 +16,7 @@
                 </div>
             </button>
             <div x-show="mod_current === {{$loop->iteration}}" x-collapse="" style="height: 0px; overflow: hidden; display: none;" hidden="">
-                <div class="p-4 text-lightgray text-sm font-normal border-t">
+                <div class="py-4 text-sm">
                     <form class="space-y-1 update-for-product" action="{{route('admin.modification-product.update.for.product', ['modification_id' => $modification->id])}}" method="POST">
 {{--                        <input type="hidden" name="modification_id" value="{{$product-modification-product->id}}">--}}
                         @csrf
@@ -24,7 +24,7 @@
                             <div class="flex items-center justify-center border-r-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span>Цена</span>
                             </div>
-                            <input name="price" value="{{$modification->price}}" class="h-7 form-input rounded-none border-gray-300" type="number">
+                            <input name="price" value="{{$modification->price}}" class="h-7 p-2 w-full border border-gray-300 bg-white" type="number">
                             <div class="flex items-center justify-center border-l-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span>руб</span>
                             </div>
@@ -34,7 +34,7 @@
                             <div class="flex items-center justify-center border-r-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span class="text-nowrap">коррекция <strong>( + / - )</strong></span>
                             </div>
-                            <input name="correct" class="h-7 form-input rounded-none border-gray-300" type="number">
+                            <input name="correct" class="h-7 p-2 w-full border border-gray-300 bg-white" type="number">
                             <div class="flex items-center justify-center border-l-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span>шт</span>
                             </div>

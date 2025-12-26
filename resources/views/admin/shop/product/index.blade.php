@@ -12,8 +12,6 @@
             <h2>Показаны <span class="px-2 bg-yellow-400">только не активные</span> сорта</h2>
         @endif
     </div>
-
-
     <div class="flex justify-between">
         <div class="">
             <a href="{{route('admin.product.index')}}" class="inline-block p-2 border text-gray-400 border-gray-300 transition-all duration-300 hover:bg-gray-300 hover:text-white">Все</a>
@@ -33,18 +31,18 @@
     </div>
 
     <div class="overflow-auto">
-        <table class="border-collapse border w-full product-table" id="myTable">
+        <table class="border-collapse border border-gray-300 w-full product-table" id="myTable">
             <thead>
             <tr class="text-left">
-                <th class="border-b">ID</th>
-                <th class="border-b">Название</th>
-                <th class="border-b">Категория</th>
-                <th class="border-b flex justify-between items-center">
+                <th class="border-b border-gray-300">ID</th>
+                <th class="border-b border-gray-300">Название</th>
+                <th class="border-b border-gray-300">Категория</th>
+                <th class="border-b border-gray-300 flex justify-between items-center">
                     <span>Цены и количество</span>
                     <a href="{{route('admin.product.reset.catalog')}}" onclick="return confirm('Подтвердите обнуление базы!')" class="py-0.5 px-2 border text-red-400 border-red-400 transition-all duration-300 hover:bg-red-400 hover:text-white" role="button">Обнулить</a>
                 </th>
-                <th class="border-b">Картинка</th>
-                <th class="border-b">Действия</th>
+                <th class="border-b border-gray-300">Картинка</th>
+                <th class="border-b border-gray-300">Действия</th>
             </tr>
             </thead>
             <tbody>
@@ -59,7 +57,7 @@
         </table>
 
     </div>
-    {{$products->links()}}
+{{--    {{$products->links()}}--}}
 
 @endsection
 

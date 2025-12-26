@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
-import laravel, { refreshPaths } from 'laravel-vite-plugin';
+import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
@@ -8,12 +9,16 @@ export default defineConfig({
                 'resources/admin/css/app.css',
                 'resources/admin/js/app.js',
             ],
-            refresh: [
-                ...refreshPaths,
-            ],
+            refresh: true,
             buildDirectory: '/build/admin',
         }),
+	tailwindcss(),
     ],
+    server: {
+        watch: {
+            ignored: ['**/storage/framework/views/**'],
+        },
+    },
     resolve: {
         alias: {
             '#': '/resources',

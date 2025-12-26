@@ -62,6 +62,9 @@ class Sidebar
                 ],
                 'mails' => [
                     'Сообщения' => route('admin.messages.index')
+                ],
+                'users' => [
+                    'Юзеры' => route('admin.users.index')
                 ]
             ]
         );

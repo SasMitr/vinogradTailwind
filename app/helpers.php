@@ -85,7 +85,15 @@ if (! function_exists('is_admin'))
 {
     function is_admin()
     {
-        return Auth::check() && Auth::user()->is_admin == 3 ? true : false;
+        return Auth::check() && Auth::user()->role == 3;
+    }
+}
+
+if (! function_exists('is_user_active'))
+{
+    function is_user_active()
+    {
+        return Auth::check() && (Auth::user()->role == 1 || is_admin());
     }
 }
 

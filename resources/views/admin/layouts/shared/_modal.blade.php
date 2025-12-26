@@ -1,4 +1,4 @@
-<div id="modal" class="fixed hidden z-50 insert-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full top-0">
+<div id="modal" class="fixed hidden z-50 insert-0 bg-black/30 backdrop-blur-md overflow-y-auto h-full w-full top-0">
     <div class="relative p-4 w-full max-w-7xl max-h-full top-24 mx-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">

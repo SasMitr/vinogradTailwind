@@ -16,8 +16,11 @@
 
     {{--    <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}">--}}
     {{--    <link rel="shortcut icon" href="{{Storage::url('pics/img/logo/logo.svg')}}">--}}
-    {{ Vite::useBuildDirectory('/build/web') }}
-    @vite(['resources/web/css/app.css', 'resources/web/js/app.js'])
+    @if (file_exists(public_path('build/web/manifest.json')) || file_exists(public_path('hot')))
+            {{ Vite::useBuildDirectory('/build/web') }}
+            @vite(['resources/web/css/app.css', 'resources/web/js/app.js'])
+        @else
+        @endif
 
 </head>
 
@@ -46,6 +49,7 @@
 
 @include('web.layouts._navbar')
 
+
 <section class="relative table w-full pt-20 pb-5 bg-gray-50">
     <div class="container relative">
         {{--            <div class="grid grid-cols-1 mt-14">--}}
@@ -65,6 +69,10 @@
         </div>
     </div><!--end container-->
 </section>
+
+<x-session-status class="p-4" :status="session('status')" />
+{{--@include('components.status')--}}
+@include('components.errors')
 
 @yield('home-header')
 

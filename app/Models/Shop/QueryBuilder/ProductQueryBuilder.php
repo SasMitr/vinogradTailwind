@@ -37,7 +37,7 @@ class ProductQueryBuilder extends Builder
             paginate($per_page, ['*'], 'page', $page);
     }
 
-    public function adminProductIndex(string|null $status): LengthAwarePaginator
+    public function adminProductIndex(string|null $status)
     {
 //        dd($status);
         return $this->
@@ -51,6 +51,7 @@ class ProductQueryBuilder extends Builder
             when(!is_null($status), function (Builder $query) use ($status) {
                 $query->where('status', $status);
             })->
+//            get();
             paginate(15);
     }
 
