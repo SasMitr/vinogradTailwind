@@ -18,8 +18,7 @@ class PriceCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes): mixed
     {
-        return $value;
-//        return Price::make($value);
+        return Price::make($value, $this->getCode($model));
     }
 
     /**
@@ -33,10 +32,16 @@ class PriceCast implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes): mixed
     {
-        return $value;
-//        if (!$value instanceof Price) {
-//            $value = Price::make($value);
-//        }
-//        return $value->raw();
+        if (!$value instanceof Price) {
+            $value = Price::make($value);
+        }
+        return $value->raw();
+    }
+
+    private function getCode($model): mixed
+    {
+        if (isset($model->order->currency)) return $model->order->currency;
+        if (isset($model->currency)) return $model->currency;
+        return '';
     }
 }

@@ -2,17 +2,23 @@
 
 namespace App\Models\Shop\Order;
 
+use App\Casts\PriceCast;
+use App\Models\Shop\Collections\OrderCollection;
 use App\Models\Shop\DeliveryMethod;
 use App\Models\Shop\QueryBuilder\OrderQueryBuilder;
 use App\Models\Shop\User;
 use App\Status\Status;
+use App\Support\ValueObjects\Price;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 
 /**
  * @method static Order|OrderQueryBuilder $query
  */
+#[CollectedBy(OrderCollection::class)]
 class Order extends Model
 {
     use Notifiable;
@@ -39,7 +45,9 @@ class Order extends Model
         'customer',
         'payment_method',
         'cost',
+        'currency',
         'note',
+        'admin_note',
         'current_status',
         'track_code',
         'statuses_json',
@@ -51,6 +59,7 @@ class Order extends Model
         'statuses_json' => 'array',
         'customer' => 'array',
         'delivery' => 'array',
+        'cost' => PriceCast::class
     ];
 
     public $customerData;
@@ -130,13 +139,29 @@ class Order extends Model
         })->sum();
     }
 
-    public function getTotalCost($delivery = false): int
+    public function getTotalCost($delivery = false): Price
     {
+//        dd($this->cost->raw());
         if (!isset($this->delivery['weight'])) {
-            return $this->cost + $this->delivery['cost'];
+//            dd(Price::make($this->cost->raw() + $this->delivery['cost'], $this->currency));
+            return $this->cost->raw() + $this->delivery['cost'];
+//            return $this->cost + $this->delivery['cost'];
         }
         $delivery = $delivery ?: DeliveryMethod::find($this->delivery['method_id']);
-        return $this->cost + $delivery->getDeliveryCost($this->delivery['weight']);
+        return Price::make(
+            $this->cost->raw() + $delivery->getDeliveryCost($this->delivery['weight']),
+            $this->currency
+        );
+//        return $this->cost->raw() + $delivery->getDeliveryCost($this->delivery['weight']);
+//        return $this->cost + $delivery->getDeliveryCost($this->delivery['weight']);
+    }
+
+    public function getDeliveryCost()
+    {
+        return Price::make(
+            $this->delivery['cost'],
+            $this->currency
+        );
     }
 
 //////////
@@ -188,11 +213,7 @@ class Order extends Model
 
     public function isMailed()
     {
-        if ($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6);
     }
 
     public function isBoxberrySent ()
@@ -200,12 +221,28 @@ class Order extends Model
         return $this->delivery['method_id'] == 7;
     }
 
+    public function isPickup ()
+    {
+        return $this->delivery['method_id'] == 1;
+    }
+
+    public function isInCart ($modification)
+    {
+//        if ($this->items->contains('product_id', $modification->product_id) && $this->items->contains('modification_id', $modification->id)){
+//            dd($this->items->where('product_id', $modification->product_id)->where('modification_id', $modification->id)->value('quantity'));
+//        }
+        return $this->items->contains('product_id', $modification->product_id) && $this->items->contains('modification_id', $modification->id)
+            ? $this->items->where('product_id', $modification->product_id)->where('modification_id', $modification->id)->value('quantity')
+            : false;
+    }
+
     public function isAllowedDateBuild(): bool
     {
-        if ($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
-            return false;
-        }
-        return true;
+        return !($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer());
+//        if ($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
+//            return false;
+//        }
+//        return true;
     }
 
     public function isTrackCode(): bool
@@ -244,7 +281,7 @@ class Order extends Model
         return round(($this->cost * 100) / $totalCost, 1);
     }
 
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(Notification $notification): array|string
     {
         return $this->customer['email'];
     }
@@ -288,12 +325,12 @@ class Order extends Model
         return $query;
     }
 
-//    public function scopeStatus($query, $status)
-//    {
-//        return $status
-//            ? $query->where('current_status', $status)
-//            : $query;
-//    }
+    public function scopeStatus($query, $status)
+    {
+        return $status
+            ? $query->where('current_status', $status)
+            : $query;
+    }
 
     public function scopeWhereStatus($query, $status)
     {
@@ -331,11 +368,24 @@ class Order extends Model
 
     ########## Mutators ################
 
-    public function getCompletedAtAttribute($value)
+//    public function getCompletedAtAttribute($value)
+//    {
+//        if ($value) {
+//            return getRusDate($value);
+//        }
+//        return '---';
+//    }
+    protected function completedAt(): Attribute
     {
-        if ($value) {
-            return getRusDate($value);
-        }
-        return '---';
+        return Attribute::make(
+            get: fn (mixed $value) => getRusDate($value),
+        );
     }
+
+//    protected function createdAt(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn (mixed $value) => getRusDate($value),
+//        );
+//    }
 }

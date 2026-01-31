@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Shop\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Currency;
 use App\Models\Shop\Order\Order;
-use App\UseCases\OrderService;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class OrderIndexController extends Controller

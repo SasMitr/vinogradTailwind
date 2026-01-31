@@ -2,8 +2,8 @@
 
 namespace App\Models\Traits;
 
-use App\UseCases\ImageService;
-use App\UseCases\Size;
+use App\Services\ImageService;
+use App\Services\Size;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 

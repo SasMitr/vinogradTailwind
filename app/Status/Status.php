@@ -58,13 +58,13 @@ class Status
     {
         return match ($status) {
             self::NEW => 'green',
-            self::PAID => 'sky',
+            self::PAID => 'cyan',
             self::SENT => 'slate',
-            self::COMPLETED => 'blue',
+            self::COMPLETED => 'indigo',
             self::CANCELLED => 'red',
             self::CANCELLED_BY_CUSTOMER => 'red',
             self::PRELIMINARY => 'orange',
-            self::FORMED => 'gray',
+            self::FORMED => 'stone',
             default => 'default',
         };
     }

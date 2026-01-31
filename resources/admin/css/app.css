@@ -2,10 +2,25 @@
 @import "./main.css";
 
 @source '../../resources/views/admin/**/*.blade.php';
+@source '../../resources/components/admin/**/*.blade.php';
 
-@source inline("bg-red-400 bg-purple-400 bg-green-400 border-red-400 border-purple-400 border-green-400");
+@source inline("bg-red-{300,400} border-red-{400,600}");
+@source inline("bg-green-{300,400} border-green-{400,600}");
+@source inline("bg-blue-{300,400} border-blue-{600}");
+@source inline("bg-purple-{400} border-purple-{400}");
+@source inline("bg-cyan-{400}");
+@source inline("bg-slate-{400}");
+@source inline("bg-orange-{400}");
+@source inline("bg-stone-{400}");
+@source inline("bg-indigo-{400}");
+
+/*@source inline("{hover:,}bg-red-{50,{100..900..100},950}");*/
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.datatable-selector {
+    @apply py-2 pr-8 pl-2;
 }

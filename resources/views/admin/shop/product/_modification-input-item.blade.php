@@ -24,7 +24,7 @@
                             <div class="flex items-center justify-center border-r-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span>Цена</span>
                             </div>
-                            <input name="price" value="{{$modification->price}}" class="h-7 p-2 w-full border border-gray-300 bg-white" type="number">
+                            <input name="price" value={{$modification->price}} class="h-7 p-2 w-full border border-gray-300 bg-white" type="number">
                             <div class="flex items-center justify-center border-l-0 border border-gray-300 bg-gray-100 px-3.5">
                                 <span>руб</span>
                             </div>
@@ -54,7 +54,7 @@
     @endforeach
     </div>
 
-    <a href="{{route('admin.modification-product.create.for.product.show', ['product_id' => $product->id])}}" type="button" data-product-id="{{$product->id}}" class="open-modal flex items-center p-2 border text-green-400 border-green-300 transition-all duration-300 hover:bg-green-300 hover:text-white">
+    <a href="{{route('admin.modification-product.create.for.product.show', ['product_id' => $product->id])}}" type="button" data-product-id="{{$product->id}}" data-width="600px" class="open-modal flex items-center p-2 border text-green-400 border-green-300 transition-all duration-300 hover:bg-green-300 hover:text-white">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <line x1="12" x2="12" y1="5" y2="19" />
             <line x1="5" x2="19" y1="12" y2="12" />

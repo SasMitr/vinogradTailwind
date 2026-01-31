@@ -1,80 +1,41 @@
-//import * as responce from "@/modules/components/resources.js";
-//import * as toastr from "@/modules/components/toastr.js";
-import * as responce from "#/common/resources.js";
-import * as toastr from "#/common/toastr.js";
+import * as UI from "#/common/UI.js";
 
-import create from "./shop/product/create.js";
-import edit from "./shop/product/edit.js";
+export function get(width = '1200px') {
+    let modal = document.createElement('div');
+    modal.className = 'fixed z-50 insert-0 bg-black/30 backdrop-blur-md overflow-y-auto h-full w-full top-0';
+    modal.innerHTML = `
+    <div class="relative max-h-full top-24 mx-auto" style="width: ${width}">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  bg-white">
+            <h3 id="modal-header" class="text-xl text-center font-semibold text-gray-900">${UI.spinner()}</h3>
+            <button id="ok-btn" type="button" class="text-orange-500 bg-transparent hover:bg-gray-200 p-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="modal-body" class="p-4 bg-white">
+            <div class="flex justify-center">${UI.spinner()}</div>
+        </div>
+    </div>`;
 
-import m_create from "./shop/modification/m_create.js";
-import m_edit from "./shop/modification/m_edit.js";
+    show(modal);
 
-import addModificationForProduct from "./shop/product-modification/addModificationForProduct.js";
-
-function modal(element) {
-
-    try {
-        let modal = document.querySelector('#modal');
-        modalPreloader(modal);
-
-        responce.get(element.getAttribute('href'))
-            .then(data => {
-                if (data.body) {
-                    modal.querySelector('#modal-body').innerHTML = data.body;
-                    modal.querySelector('#modal-header').innerHTML = data.header;
-
-                    const module = modal.querySelector('form').getAttribute('data-modules');
-
-                    switch (module) {
-                        case 'create':
-                            create(modal);
-                            break;
-                        case 'edit':
-                            edit(modal);
-                            break;
-                        case 'addModificationForProduct':
-                            addModificationForProduct(modal);
-                            break;
-                        case 'm_create':
-                            m_create(modal);
-                            break;
-                        case 'm_edit':
-                            m_edit(modal);
-                            break;
-                    }
-
-                } else if (data.errors) {
-                    toastr.errors(data.errors);
-                    console.log(data);
-                } else {
-                    toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-                    console.log(data);
-                }
-            })
-            .catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr.responseText);
-            });
-        modal.querySelector('#ok-btn').onclick = function () {
-            modal.style.display = 'none';
-        };
-
-        //  Закрытие окна по клику на подложку
-        // window.onclick = function (e) {
-        //     if (e.target == modal) {
-        //         modal.style.display = 'none';
-        //     }
-        // }
-
-    } catch (err) {
-        console.error(err);
-    }
+    return modal;
 }
 
-function modalPreloader(modal){
-    modal.querySelector('#modal-body').innerHTML = '<div class="flex justify-center"><div class="animate-spin inline-block w-10 h-10 mx-auto border-[3px] border-l-transparent border-blue-700 rounded-full"></div></div>';
-    modal.querySelector('#modal-header').innerHTML = '<div class="animate-spin inline-block w-10 h-10 mx-auto border-[3px] border-l-transparent border-blue-700 rounded-full"></div>';
-    modal.style.display = 'block';
+export function show(modal){
+    document.body.appendChild(modal);
 }
 
-export default modal;
+export function hide(modal){
+    modal.remove();
+}
+
+export function insert(modal, option){
+    modal.querySelector('#modal-body').innerHTML = option.body;
+    modal.querySelector('#modal-header').innerHTML = option.header;
+}
+
+export function getModule(modal) {
+    return modal.querySelector('form').getAttribute('data-modules');
+}

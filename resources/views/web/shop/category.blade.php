@@ -83,5 +83,5 @@
             @endforeach
         </div><!--end grid-->
 
-        {{$products->onEachSide(1)->links('web.partials.pagination')}}
+        {{$products->withQueryString()->onEachSide(1)->links('web.partials.pagination')}}
 @endsection

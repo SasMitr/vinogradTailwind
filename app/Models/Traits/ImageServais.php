@@ -5,8 +5,8 @@ namespace App\Models\Traits;
 use App\Http\Requests\Admin\Shop\Product\ProductRequest;
 use App\Jobs\GalleryProcessing;
 use App\Jobs\ImageProcessing;
-use App\UseCases\ImageService;
-use App\UseCases\Size;
+use App\Services\ImageService;
+use App\Services\Size;
 use Illuminate\Support\Facades\Storage;
 
 trait ImageServais

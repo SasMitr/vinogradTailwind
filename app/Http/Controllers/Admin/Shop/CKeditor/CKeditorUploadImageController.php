@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Shop\CKeditor;
 
 use App\Http\Controllers\Controller;
-use App\UseCases\ImageService;
-use App\UseCases\Size;
+use App\Services\ImageService;
+use App\Services\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;

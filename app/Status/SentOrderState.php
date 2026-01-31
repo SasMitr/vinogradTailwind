@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 final class SentOrderState extends OrderState
 {
     protected $allowedStatuses = [
-        Status::PAID,
+//        Status::PAID,
         Status::COMPLETED,
         Status::CANCELLED,
     ];
@@ -19,7 +19,7 @@ final class SentOrderState extends OrderState
 
     public function actions(): void
     {
-        $this->service->checkoutInStock($this->order);
+//        $this->service->checkoutInStock($this->order);
     }
 
     public function humanValue(): string

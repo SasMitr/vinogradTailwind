@@ -2,9 +2,11 @@
 
 namespace App\Models\Shop\Order;
 
+use App\Casts\PriceCast;
 use App\Models\Shop\ModificationProduct;
 use App\Models\Shop\Product;
-use App\UseCases\OrderService;
+use App\Services\OrderService;
+use App\Support\ValueObjects\Price;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
@@ -12,6 +14,10 @@ class OrderItem extends Model
     protected $table = 'vinograd_order_items';
     public $timestamps = false;
     protected $fillable = ['order_id', 'product_id', 'modification_id', 'price', 'quantity', 'availability'];
+
+    protected $casts = [
+        'price' => PriceCast::class
+    ];
 
     public function product()
     {
@@ -21,6 +27,11 @@ class OrderItem extends Model
     public function modification()
     {
         return $this->belongsTo(ModificationProduct::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public static function create($order_id, ModificationProduct $modification, $price, $quantity)
@@ -34,9 +45,13 @@ class OrderItem extends Model
         return $item;
     }
 
-    public function getCost(): int
+    public function getCost(): Price
     {
-        return $this->price * $this->quantity;
+        return Price::make(
+            $this->price->raw() * $this->quantity,
+            $this->order->currency
+        );
+//        return $this->price->raw() * $this->quantity;
     }
 
     public static function remove($id)
@@ -47,12 +62,14 @@ class OrderItem extends Model
     public static function getOrderSortedByItems ($order)
     {
         $items = self::getOrderItems($order);
+//        dd($items);
 
         if (!in_array($order->current_status, [1, 8])) {
             return $items;
         }
 
         $in_stock_items = OrderService::getInStockItemsCount($order->created_at);
+//        dd($in_stock_items, $order->created_at, strtotime($order->created_at));
         return $items->map(function ($item) use ($in_stock_items) {
             $item->availability = (
                 $in_stock_items->
@@ -84,6 +101,8 @@ class OrderItem extends Model
             $join->on('mod.id', '=', 'prod_mod.modification_id');
         })->
         select(
+            'vinograd_order_items.id',
+            'vinograd_order_items.order_id',
             'prod.name as product_name',
             'prod.id as product_id',
             'mod.name as modification_name',
@@ -94,6 +113,7 @@ class OrderItem extends Model
         selectRaw('1 as `availability`')->
         where('order_id', $order->id)->
         orderBy('product_name')->
+        with('order:id,currency')->
         get();
     }
 }

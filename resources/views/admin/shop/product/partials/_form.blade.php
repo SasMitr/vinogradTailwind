@@ -139,7 +139,7 @@
                         class="flex items-center justify-center border-r-0 border border-gray-300 bg-gray-100 px-3.5">
                         <span class="text-nowrap">Срок созревания (дней)</span>
                     </div>
-                    <select class="h-7 py-0 text-sm w-full border-gray-300" name="ripening">
+                    <select class="h-7 px-2 text-sm w-full border-gray-300" name="ripening">
                         <option value="">Выбрать срок созревания</option>
                         @foreach(ripeningProducts() as $id => $name)
                             <option value="{{$id}}" @selected($id == old('ripening', isset($product) ? $product->ripening : false)) >{{$name}}</option>
@@ -196,7 +196,7 @@
                         id="choices-multiple-remove-button">
                     <option value="">Выбрать похожие сорта</option>
                     @foreach($products as $id => $name)
-                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && $product->props['similar'] !=null) ? $product->props['similar'] : [])))>{{$name}}</option>
+                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && isset($product->props['similar'])) ? $product->props['similar'] : [])))>{{$name}}</option>
                     @endforeach
                 </select>
             </div>

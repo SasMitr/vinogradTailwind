@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Vinograd;
+namespace App\Http\Requests\Shop;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,15 +11,28 @@ class CheckoutRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'customer' => array_merge(
+                $this->customer,
+                [
+                    'phone' => preg_replace("/[^\d]/", '', $this->input('customer.phone')),
+                    'other_phone' => preg_replace("/[^\d]/", '', $this->input('customer.other_phone')),
+                ]
+            ),
+        ]);
+    }
+
     public function rules()
     {
-//        dd($this->delivery);
         return [
             'delivery.address' => 'sometimes|string',
             'delivery.index' => 'sometimes|regex:/^[0-9]{6}$/',
             'delivery.slug' => 'exists:vinograd_delivery_methods,slug',
             'customer.name' => 'required|min:3|max:50|string',
-            'customer.phone' => 'required_if:delivery.slug,boxberry|nullable|required_without:customer.email',
+            'customer.phone' => 'required_if:delivery.slug,yandex|nullable|required_without:customer.email|min:9|max:15',
+            'customer.other_phone' => 'nullable|min:9|max:15',
             'customer.email' => 'nullable|required_without:customer.phone|email',
             'note' => 'nullable|string',
         ];
@@ -32,6 +45,10 @@ class CheckoutRequest extends FormRequest
             'customer.email.required_without' => 'Оставьте для обратной связи либо Email либо номер телефона.',
             'customer.phone.required_without' => 'Оставьте для обратной связи либо Email либо номер телефона.',
             'customer.phone.required_if' => 'Оставьте номер своего мобильного телефона. На него придет сообщение о доставке посылки.',
+            'customer.phone.min' => 'Оставьте корректный номер телефона.',
+            'customer.phone.max' => 'Оставьте корректный номер телефона.',
+            'customer.other_phone.min' => 'Оставьте корректный номер телефона.',
+            'customer.other_phone.max' => 'Оставьте корректный номер телефона.',
             'delivery.index.regex'  => 'Введите индекс почты правильного формата.',
             'delivery.address.string'  => 'Укажите действительный адрес отправки заказа.',
             'delivery.slug.exists'  => 'Что-то пошло не так, попробуйте снова.',

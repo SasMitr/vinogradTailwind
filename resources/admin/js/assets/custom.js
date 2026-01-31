@@ -13,7 +13,6 @@ document.addEventListener("alpine:init", () => {
 
         toggle() {
             this.open = !this.open;
-            console.log('open = ' + this.open);
         }
     }));
     Alpine.data("modals", (initialOpenState = false) => ({
@@ -29,7 +28,7 @@ document.addEventListener("alpine:init", () => {
     // main - custom functions
     Alpine.data("main", (value) => ({
         sendData(phone) {
-            console.log(phone);
+            // console.log(phone);
         }
     }));
 

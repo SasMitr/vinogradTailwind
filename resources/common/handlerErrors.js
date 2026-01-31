@@ -1,21 +1,22 @@
 export function errorFormField (selector, items, form)
 {
-    let input = form.querySelector('[name="' + selector + '"]');
+    try {
+        let input = form.querySelector('[name="' + selector + '"]');
 
-    selector = selector.split('[').join('_').split(']').join('');
-    let errorsBlock = form.querySelector('.' + selector + '-block');
+        selector = selector.split('[').join('_').split(']').join('');
+        let errorsBlock = form.querySelector('.' + selector + '-block');
 
+        if(errorsBlock) {
+            input.classList.remove('border-red-400');
+            errorsBlock.remove()
+        }
 
-    if(errorsBlock) {
-        input.classList.remove('border-red-400');
-        errorsBlock.remove()
-    }
-
-    if(items){
-        let errorsBlock = getErrorsList(selector + '-block', items);
-        form.querySelector('#' + selector + '-block').append(errorsBlock);
-        input.classList.add('border-red-400');
-    }
+        if(items){
+            let errorsBlock = getErrorsList(selector + '-block', items);
+            form.querySelector('#' + selector + '-block').append(errorsBlock);
+            input.classList.add('border-red-400');
+        }
+    } catch (e) {}
 }
 
 export function errorsHandler(errors, form)
@@ -25,7 +26,7 @@ export function errorsHandler(errors, form)
     for (let item in fieldList) {
 
         const field = fieldList[item];
-        const selector = field.replace(/([a-z]+)\.([a-z]+|[0-9]+)/, function (match, p1, p2){
+        const selector = field.replace(/([a-z]+)\.([a-z-_]+|[0-9]+)/, function (match, p1, p2){
             return isNaN(p2) ? p1 + '[' + p2 + ']' : p1 + '[]';
         });
 

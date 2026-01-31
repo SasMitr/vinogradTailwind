@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\UseCases\PostContentService;
+use App\Services\PostContentService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Database\Eloquent\Model;

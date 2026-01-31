@@ -27,7 +27,7 @@ function insert(alert)
 function create(message, type)
 {
     let alert = document.createElement('div');
-    alert.className = 'w-full text-white py-3 px-4 mb-2 hidden bg-' + type + '-300 border-' + type + '-600';
+    alert.className = 'w-full text-white py-3 px-4 mb-2 hidden bg-' + type + '-300 border border-' + type + '-600';
     // alert.className = type;
     let span = document.createElement('span');
     span.innerHTML = getMessage(message);
@@ -44,7 +44,8 @@ function getMessage(message)
     if((typeof message) == 'object'){
         let temp = '';
         for (var item in message) {
-            temp = temp + '<li>' + message[item] + "</li>";
+            temp = temp + '<p>' + message[item] + "</p>";
+            // temp = temp + '<li>' + message[item] + "</li>";
         }
         return temp;
     }

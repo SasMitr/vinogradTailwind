@@ -2,13 +2,17 @@
 
 //use App\Filter\FilterManager;
 //use \App\Status\Status;
+use App\Models\Shop\DeliveryMethod;
 use App\Status\Status;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 if (!function_exists('getRusDate'))
  {
-    function getRusDate(/*$dateTime */ $timestamp, $format = '%DAYWEEK%, d %MONTH% Y H:i', $offset = 3)
+    function getRusDate(/*$dateTime */$timestamp, $format = '%DAYWEEK%, d %MONTH% Y H:i', $offset = 3)
     {
+        if (!$timestamp) return '---';
+
         $monthArray = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
         $daysArray = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
@@ -113,7 +117,7 @@ if (! function_exists('currency'))
 {
     function currency($value)
     {
-        return \App\UseCases\CurrencyService::Currency()->price($value);
+        return \App\Services\CurrencyService::Currency()->price($value);
     }
 }
 
@@ -121,7 +125,7 @@ if (! function_exists('signature'))
 {
     function signature()
     {
-        return \App\UseCases\CurrencyService::Currency()->sign();
+        return \App\Services\CurrencyService::Currency()->sign();
     }
 }
 
@@ -129,7 +133,7 @@ if (! function_exists('realCurr'))
 {
     function realCurr()
     {
-        return \App\UseCases\CurrencyService::Currency()->realCurrency();
+        return \App\Services\CurrencyService::Currency()->realCurrency();
     }
 }
 
@@ -243,7 +247,7 @@ if (! function_exists('yearsQuery'))
 {
     function yearsQuery()
     {
-        return \App\UseCases\Dashboard\DashboardService::getArrayOfYears();
+        return \App\Services\Dashboard\DashboardService::getArrayOfYears();
     }
 }
 
@@ -260,5 +264,15 @@ if (! function_exists('filters'))
     function filters()
     {
         return app(FilterManager::class)->items();
+    }
+}
+
+if (! function_exists('deliverysArray'))
+{
+    function deliverysArray()
+    {
+        return Cache::rememberForever('deliverys_to_array', function () {
+            return DeliveryMethod::query()->active()->get()->pluck('name', 'id')->all();
+        });
     }
 }

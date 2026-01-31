@@ -6,7 +6,7 @@ use App\Mail\Admin\StatusChangeErrorMail;
 use App\Mail\Admin\StatusChangeMail;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\Status;
-use App\UseCases\StatusService;
+use App\Services\StatusService;
 use Illuminate\Console\Command;
 use Mail;
 

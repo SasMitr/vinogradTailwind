@@ -30,8 +30,8 @@
         </div>
     </div>
 
-    <div class="overflow-auto">
-        <table class="border-collapse border border-gray-300 w-full product-table" id="myTable">
+    <div class="overflow-auto bg-white border border-gray-300">
+        <table class="border-collapse w-full product-table" id="myTable">
             <thead>
             <tr class="text-left">
                 <th class="border-b border-gray-300">ID</th>

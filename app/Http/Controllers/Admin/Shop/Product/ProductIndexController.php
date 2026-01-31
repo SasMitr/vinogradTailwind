@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Shop\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Shop\ModificationProduct;
 use App\Models\Shop\Product;
 
 class ProductIndexController extends Controller

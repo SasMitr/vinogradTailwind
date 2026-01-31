@@ -13,7 +13,7 @@ class Badge
 
     public function __construct()
     {
-        $this->badges[route('admin.order.index')] = $this->quantityOrders();
+        $this->badges[route('admin.orders.index')] = $this->quantityOrders();
         $this->badges[route('admin.messages.index')] = $this->quantityMessages();
         $this->badges[route('admin.blog.comments')] = $this->quantityPostComment();
         $this->badges[route('admin.product.comment.index')] = $this->quantityProductComment();

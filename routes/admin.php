@@ -18,6 +18,15 @@ use App\Http\Controllers\Admin\Shop\ModificationProduct\AddModificationProductCo
 use App\Http\Controllers\Admin\Shop\ModificationProduct\CreateModificationProductController;
 use App\Http\Controllers\Admin\Shop\ModificationProduct\UpdateModificationProductController;
 use App\Http\Controllers\Admin\Shop\Order\OrderIndexController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersCurrencyController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersDateBuildController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersDeliveryController;
+use App\Http\Controllers\Admin\Shop\Order\OrderShowController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersAdminNoteController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersSelectStatusController;
+use App\Http\Controllers\Admin\Shop\Order\OrdersTreckCodeController;
+use App\Http\Controllers\Admin\Shop\OrderItem\OrderItemAddController;
+use App\Http\Controllers\Admin\Shop\OrderItem\OrderItemUpdateController;
 use App\Http\Controllers\Admin\Shop\Product\ProductCommentsIndexController;
 use App\Http\Controllers\Admin\Shop\Product\ProductCreateController;
 use App\Http\Controllers\Admin\Shop\Product\ProductIndexController;
@@ -86,8 +95,25 @@ Route::as('blog.')->prefix('blog')->group(function () {
     Route::get('/comments', BlogCommentController::class)->name('comments');
 });
 
-Route::as('order.')->prefix('order')->group(function () {
+Route::as('orders.')->prefix('orders')->group(function () {
     Route::get('/{status?}', OrderIndexController::class)->name('index');
+    Route::get('/order/{order}', OrderShowController::class)->name('order');
+
+    Route::prefix('ajax')->as('ajax.')->group(function () {
+        Route::patch('/admin-note/{order}', OrdersAdminNoteController::class)->name('admin-note');
+        Route::patch('/date_build/{order}', OrdersDateBuildController::class)->name('date_build');
+        Route::patch('/select_status/{order}', OrdersSelectStatusController::class)->name('select_status');
+        Route::patch('/status-treck-code/{order}', [OrdersTreckCodeController::class, 'statusTreckCode'])->name('status-treck-code');
+        Route::patch('/treck-code/{order}', [OrdersTreckCodeController::class, 'treckCode'])->name('treck-code');
+        Route::patch('/currency/{order}', OrdersCurrencyController::class)->name('currency');
+        Route::get('/delivery/{delivery}/order/{order}', [OrdersDeliveryController::class, 'show'])->name('delivery-form');
+        Route::patch('/delivery-update/{order}', [OrdersDeliveryController::class, 'update'])->name('delivery-update');
+
+        Route::patch('/order-item-update/{order}', OrderItemUpdateController::class)->name('order_item_update');
+
+        Route::get('/order-item-add/{order}', [OrderItemAddController::class, 'show'])->name('order_item_add_form'); //
+        Route::patch('/order-item-add/{order}', [OrderItemAddController::class, 'add'])->name('order_item_add');
+    });
 });
 
 Route::as('messages.')->prefix('messages')->group(function () {

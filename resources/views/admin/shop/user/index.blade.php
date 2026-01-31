@@ -26,5 +26,8 @@
         </table>
 
     </div>
-    {{ $users->onEachSide(1)->links('admin.components.pagination.tailwind') }}
+    <div class="mb-10">
+        {{ $users->onEachSide(1)->links('admin.components.pagination.tailwind') }}
+    </div>
+
 @endsection

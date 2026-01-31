@@ -10,6 +10,7 @@
 
 @section('style')
     <link rel="stylesheet" href="/css/choices.min.css">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" />
 @endsection
 
 @section('scripts')

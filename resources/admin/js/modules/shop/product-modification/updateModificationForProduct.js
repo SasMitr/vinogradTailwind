@@ -1,10 +1,9 @@
-//import * as responce from "@/modules/components/resources.js";
-import * as responce from "../../../../../common/resources.js";
-//import * as toastr from "@/modules/components/toastr.js";
-import * as toastr from "../../../../../common/toastr.js";
+import * as responce from "#/common/resources.js";
+import * as toastr from "#/common/toastr.js";
 
-function updateModificationForProduct(form) {
+function updateModificationForProduct(element) {
 
+    const  form = element.closest('form');
     const url = form.getAttribute('action');
 
     const formData = new FormData(form);

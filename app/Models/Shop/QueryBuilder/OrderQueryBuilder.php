@@ -5,6 +5,7 @@ namespace App\Models\Shop\QueryBuilder;
 use App\Status\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class OrderQueryBuilder extends Builder
 {
@@ -16,22 +17,18 @@ class OrderQueryBuilder extends Builder
             ->paginate(30);
     }
 
-    public function quantityOrdersByStatus ()
+    public function quantityOrdersByStatus (): array
     {
-        $res = $this->
-            select('current_status AS status')->
-            selectRaw('COUNT(current_status) AS quantity_orders')->
-            whereNotIn('current_status', [Status::COMPLETED, Status::CANCELLED, Status::CANCELLED_BY_CUSTOMER])->
-            groupBy('status')->
-            get()->
-            pluck('quantity_orders', 'status')->
-            toArray();
-
-        return array_replace(
-            array_map(function() {
-                return 0;
-            }, Status::list()),
-        $res);
+        return Cache::rememberForever('quantity_orders_by_status', function () {
+            return $this->
+                select('current_status AS status')->
+                selectRaw('COUNT(current_status) AS quantity_orders')->
+                whereNotIn('current_status', [Status::COMPLETED, Status::CANCELLED, Status::CANCELLED_BY_CUSTOMER])->
+                groupBy('status')->
+                get()->
+                pluck('quantity_orders', 'status')->
+                toArray();
+        });
     }
 
     public function getFilterOrders(Request $request, $status)

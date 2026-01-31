@@ -10,7 +10,8 @@ class ProductQueryBuilder extends Builder
 {
     public function getFilteredProducts(): ProductQueryBuilder
     {
-        return $this->active()
+        return $this
+            ->active()
             ->with('modifications.property', 'selection:id,name,slug', 'country:id,name,slug')
             ->where(function (Builder $query) {
                     $query->filtered();
@@ -51,8 +52,17 @@ class ProductQueryBuilder extends Builder
             when(!is_null($status), function (Builder $query) use ($status) {
                 $query->where('status', $status);
             })->
-//            get();
-            paginate(15);
+            get();
+//            paginate(15);
+    }
+
+    public function allProducts ()
+    {
+        return $this
+            ->select('id', 'name', 'slug')
+            ->with('adminModifications.property')
+            ->active()
+            ->get();
     }
 
 
@@ -67,5 +77,23 @@ class ProductQueryBuilder extends Builder
         return ($request->get('order_by'))
             ? current(array_column(Category::$sortProductList, $request->order_by))
             : false;
+    }
+
+    public function getSortProductByModifications($request, $page, $category = null, $per_page = '')
+    {
+        return $this->
+            with('modifications.property')->
+            leftJoin('vinograd_product_modifications AS modifications', function ($join) {
+                $join->on('vinograd_products.id', '=', 'modifications.product_id')
+                    ->where('modifications.quantity', '>', 0);
+            })->
+            selectRaw('vinograd_products.id, vinograd_products.name, vinograd_products.slug, vinograd_products.description,
+                                                                    Case COUNT(`modifications`.`id`) When 0 Then 0 Else 1 END AS `existence`')->
+            active()->
+            groupBy('vinograd_products.id', 'vinograd_products.name', 'vinograd_products.slug', 'vinograd_products.description', 'vinograd_products.ripening')->
+            ripening($request)->
+            sort($this->getSort($request))->
+            category($request, $category)->
+            paginate($per_page, ['*'], 'page', $page);
     }
 }

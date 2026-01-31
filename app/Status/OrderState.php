@@ -5,7 +5,7 @@ namespace App\Status;
 use App\Models\Shop\Order\Order;
 //use App\Repositories\ModificationRepository;
 //use App\Repositories\OrderRepository;
-use App\UseCases\StatusService;
+use App\Services\StatusService;
 //use Html;
 use Illuminate\Support\Arr;
 use \RuntimeException;
@@ -53,10 +53,7 @@ abstract class OrderState
     public function name($status = false): string
     {
         $status = $status ?: $this->value();
-        return '<span class="inline-flex items-center text-xs justify-center p-2.5 bg-'. Status::color($status) .'-400 text-white">'. Arr::get(Status::list(), $status) .'</span>';
-//        return Html::tag('span', Arr::get(Status::list(), $status), [
-//            'class' => 'input-group-text bg-' . Status::color($status)
-//        ]);
+        return '<p class="p-2.5 bg-'. Status::color($status) .'-400 text-white">'. Arr::get(Status::list(), $status) .'</p>';
     }
 
     protected function getAllowedStatuses(): array

@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Shop\Product\ProductRequest;
 use App\Jobs\ContentProcessing;
 use App\Models\Shop\Product;
-use App\UseCases\PostContentService;
 use Illuminate\Http\Request;
 
 class ProductUpdateController extends Controller

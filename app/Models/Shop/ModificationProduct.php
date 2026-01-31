@@ -2,18 +2,18 @@
 
 namespace App\Models\Shop;
 
-//use App\Casts\PriceCast;
+use App\Casts\PriceCast;
 use Illuminate\Database\Eloquent\Model;
 
 class ModificationProduct extends Model
 {
     protected $table = 'vinograd_product_modifications';
     public $timestamps = false;
-    protected $fillable = ['product_id', 'modification_id', 'price', 'quantity'];
+    protected $fillable = ['product_id', 'modification_id', 'price', 'quantity', 'in_stock'];
 
-//    protected $casts = [
-//        'price' => PriceCast::class
-//    ];
+    protected $casts = [
+        'price' => PriceCast::class
+    ];
 
     public function product()
     {
@@ -75,7 +75,7 @@ class ModificationProduct extends Model
         $this->quantity += $quantity;
     }
 
-    public function returnInStock($quantity) // Применять если отменяется заказ со статусом отправлен или оплачен
+    public function returnInStock($quantity)
     {
         $this->in_stock += $quantity;
     }
