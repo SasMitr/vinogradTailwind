@@ -1,34 +1,26 @@
-import * as responce from "../../../../../common/resources.js";
-import * as toastr from "../../../../../common/toastr.js";
-import * as handler from "../../../../../common/handlerErrors.js";
+import Post from "#/common/fetch/post.js";
+import * as toastr from "#/common/toastr.js";
+import * as handler from "#/common/handlerErrors.js";
 
-function addModificationForProduct(modal) {
-    let form = modal.querySelector('form');
+export default function addModificationForProduct(modal) {
+
+    let form = modal.get().querySelector('form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const url = form.getAttribute('action');
-        const formData = new FormData(form);
-        responce.post(url, formData)
-            .then(data => {
-                if(data.success) {
 
-                    document.querySelector('#product_' + data.id).innerHTML = data.success;
-                    modal.style.display = 'none';
-                    toastr.success('Модификация успешно добавлена');
+        const response = new Post (form.getAttribute('action'));
+        response.body ({
+            form: form
+        });
+        response.success = function () {
+            document.querySelector('#product_' + response.data.id).innerHTML = response.data.success;
+            modal.hide();
+            toastr.success('Модификация успешно добавлена');
+        }
+        response.error = function () {
+            handler.errorsHandler(response.data.errors, form);
+        }
+        response.send();
 
-                } else if(data.errors){
-
-                    toastr.errors(data.errors);
-                    handler.errorsHandler(data.errors, form);
-
-                }else{
-                    toastr.errors('Что-то пошло не так. Перегрузите страницу и попробуйте снова.');
-                }
-            }).catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr);
-            });
     });
 }
-
-export default addModificationForProduct;

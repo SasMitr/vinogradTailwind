@@ -8,6 +8,7 @@ import selectStatus from "./modules/shop/order/selectStatus.js";
 import treckCode from "./modules/shop/order/treckCode.js";
 import updateCurrency from "./modules/shop/order/updateCurrency.js";
 import quantityOrderItem from "./modules/shop/order/quantityOrderItem.js";
+import sendMessage from "./modules/shop/order/sendMessage.js";
 import quantityOrderInputEventChange from "./modules/shop/order/quantityOrderInputEventChange.js";
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -33,6 +34,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
         } else if(e.target.closest('.update-currency')) {
             workOffClick('.update-currency', updateCurrency);
+
+        } else if(e.target.closest('.send-message')) {
+            workOffClick('.send-message', sendMessage);
 
         } else if( (element = e.target.closest('.quantity-order-item')) ) {
             if (content.contains(element)) {

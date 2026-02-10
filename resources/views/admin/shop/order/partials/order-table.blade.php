@@ -10,6 +10,7 @@
         </thead>
         <tbody class="text-gray invoice-table">
         @foreach ($items as $item)
+            @php $item->setRelation('order', $order) @endphp
             <tr class="{{$item->availability < 0 ? 'bg-red-50' : ''}}">
                 <td>
                     <strong>{{$item->product_name}}</strong><br>

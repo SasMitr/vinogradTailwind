@@ -1,4 +1,4 @@
-import * as responce from "#/common/resources.js";
+import Post from "#/common/fetch/post.js";
 import * as toastr from "#/common/toastr.js";
 import * as UI from "#/common/UI.js";
 
@@ -24,27 +24,23 @@ function adminNote(item) {
 
             item.innerHTML = UI.spinner();
 
-            let formData = new FormData();
-            formData.set('_method', 'patch');
-            formData.set('admin_note', newValue);
-
-            responce.post(item.dataset.url, formData)
-                .then(data => {
-                    if (data.success) {
-                        item.innerHTML = newValue;
-                        toastr.success('Примечание сохранено');
-                    } else if (data.errors) {
-                        item.innerHTML = oldValue;
-                        toastr.errors(data.errors);
-                    } else {
-                        item.innerHTML = oldValue;
-                        toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-                    }
-                }).catch((xhr) => {
-                    item.innerHTML = oldValue;
-                    toastr.errors(xhr.responseText);
-                    console.log(xhr.responseText);
-                });
+            const response = new Post (item.dataset.url);
+            response.body ({
+                data: {
+                    _method: 'patch',
+                    admin_note: newValue
+                }
+            });
+            response.success = function () {
+                item.innerHTML = newValue;
+                toastr.success('Примечание сохранено');
+            }
+            response.error =
+            response.failing =
+            response.catching = function () {
+                item.innerHTML = oldValue;
+            }
+            response.send();
         });
 
         // в случае нажатия клавиши Enter делаем то же самое, что и при уходе фокуса

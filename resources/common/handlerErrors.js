@@ -30,7 +30,7 @@ export function errorsHandler(errors, form)
             return isNaN(p2) ? p1 + '[' + p2 + ']' : p1 + '[]';
         });
 
-        errorFormField (selector, errors[field], form)
+        errorFormField (selector, errors[field], form);
     }
 }
 

@@ -49,6 +49,6 @@ function getMessage(message)
         }
         return temp;
     }
-    console.log(message);
+    // console.log(message, typeof message);
     return 'Неподдерживаемый тип данных!';
 }

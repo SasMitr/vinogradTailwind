@@ -4,7 +4,7 @@ import * as toastr from "#/common/toastr.js";
 
 function m_create(modal) {
     try {
-        let form = modal.querySelector('form');
+        let form = modal.get().querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const url = form.getAttribute('action');
@@ -19,7 +19,7 @@ function m_create(modal) {
                         tr.innerHTML = data.success;
                         document.querySelector('tbody').prepend(tr);
 
-                        modal.style.display = 'none';
+                        modal.hide();
                         toastr.success('Новая модификация добавлена!!');
 
                     } else if(data.errors){
@@ -32,9 +32,9 @@ function m_create(modal) {
                         toastr.errors('Что-то пошло не так. Перегрузите страницу и попробуйте снова.');
                     }
                 }).catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr.responseText);
-            });
+                    toastr.errors(xhr.responseText);
+                    console.log(xhr.responseText);
+                });
 
         });
 

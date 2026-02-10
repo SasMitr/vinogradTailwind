@@ -1,4 +1,4 @@
-import * as responce from "#/common/resources.js";
+import Post from "#/common/fetch/post.js";
 import * as toastr from "#/common/toastr.js";
 import * as UI from "#/common/UI.js";
 
@@ -24,27 +24,24 @@ function treckCode(element) {
 
             element.innerHTML = UI.spinner();
 
-            let formData = new FormData();
-            formData.set('_method', 'patch');
-            formData.set('track_code', newValue);
-
-            responce.post(element.dataset.url, formData)
-                .then(data => {
-                    if (data.success) {
-                        element.innerHTML = newValue;
-                        toastr.success('Трек код сохранен');
-                    } else if (data.errors) {
-                        element.innerHTML = oldValue;
-                        toastr.errors(data.errors);
-                    } else {
-                        element.innerHTML = oldValue;
-                        toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-                    }
-                }).catch((xhr) => {
-                element.innerHTML = oldValue;
-                toastr.errors(xhr.responseText);
-                console.log(xhr.responseText);
+            const response = new Post (element.dataset.url);
+            response.body ({
+                data: {
+                    _method: 'patch',
+                    track_code: newValue
+                }
             });
+            response.success = function () {
+                element.innerHTML = newValue;
+                toastr.success('Трек код сохранен');
+            }
+            response.error =
+            response.failing =
+            response.catching = function () {
+                element.innerHTML = oldValue;
+            }
+            response.send();
+
         });
 
         // в случае нажатия клавиши Enter делаем то же самое, что и при уходе фокуса

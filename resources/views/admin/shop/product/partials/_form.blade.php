@@ -212,9 +212,9 @@
                     <div class="flex flex-wrap items-center gap-5">
                         @foreach($product->getGallery('100x100') as $image)
                         <div class="relative h-24 w-24">
-                            <img src="{{asset(Storage::url($image))}}" class="h-24 w-24 flex-none object-cover">
+                            <img src="{{asset(Storage::url($image))}}">
                             <input name="removeGallery[]" value="{{class_basename($image)}}" data-url="{{route('admin.product.remove.img.gallery')}}" type="checkbox"
-                                   class="absolute -bottom-2 -right-2 h-7 w-7 bg-danger ring-2 ring-white">
+                                   class="remove-gallery absolute -bottom-2 -right-2 ring-2 ring-white z-100">
                         </div>
                         @endforeach
                     </div>

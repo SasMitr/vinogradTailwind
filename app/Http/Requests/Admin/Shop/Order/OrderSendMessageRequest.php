@@ -1,20 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Admin\Vinograd\Order;
+namespace App\Http\Requests\Admin\Shop\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SendReplyMailRequest extends FormRequest
+class OrderSendMessageRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
         return [
-            'order_id' => 'required|exists:vinograd_orders,id',
+            'add_cart' => 'sometimes|accepted',
             'subject' =>  'required',
             'message' =>  'required'
         ];
@@ -23,8 +19,6 @@ class SendReplyMailRequest extends FormRequest
     public function messages()
     {
         return [
-            'order_id.required' => 'Не балуй',
-            'order_id.exists' => 'Не балуй',
             'subject.required' => 'Укажите тему письма',
             'message.required' => 'Набросайте хоть пару словей!'
         ];

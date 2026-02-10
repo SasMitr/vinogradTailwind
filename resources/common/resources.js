@@ -1,3 +1,5 @@
+import * as toastr from "#/common/toastr.js";
+
 export async function get(url, data = false) {
     const res = await fetch(url + searchParams(data), {
         method: "GET",
@@ -11,13 +13,31 @@ export async function get(url, data = false) {
 
 export async function post (url, data) {
     data.set('_token', document.querySelector('meta[name="csrf-token"]').content);
-    let res = await fetch(url, {
-        method: "POST",
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        body: data
-    });
-    return await res.json();
+
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            body: data
+        });
+        return await res.json();
+    }
+    catch (xhr) {
+        toastr.errors(xhr);
+        console.log(xhr);
+    }
+    finally {}
 }
+
+// export async function post (url, data) {
+//     data.set('_token', document.querySelector('meta[name="csrf-token"]').content);
+//     let res = await fetch(url, {
+//         method: "POST",
+//         headers: {'X-Requested-With': 'XMLHttpRequest'},
+//         body: data
+//     });
+//     return await res.json();
+// }
 
 function searchParams(data) {
     let search = window.location.search

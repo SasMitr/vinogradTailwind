@@ -62,7 +62,6 @@ class OrderItem extends Model
     public static function getOrderSortedByItems ($order)
     {
         $items = self::getOrderItems($order);
-//        dd($items);
 
         if (!in_array($order->current_status, [1, 8])) {
             return $items;
@@ -90,7 +89,7 @@ class OrderItem extends Model
 
     public static function getOrderItems ($order)
     {
-        return self::
+        return self::query()->
         leftJoin('vinograd_products as prod', function ($join) {
             $join->on('prod.id', '=', 'vinograd_order_items.product_id');
         })->
@@ -113,7 +112,7 @@ class OrderItem extends Model
         selectRaw('1 as `availability`')->
         where('order_id', $order->id)->
         orderBy('product_name')->
-        with('order:id,currency')->
+//        with('order:id,currency')->
         get();
     }
 }

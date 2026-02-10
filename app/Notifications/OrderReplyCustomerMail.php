@@ -35,8 +35,7 @@ class OrderReplyCustomerMail extends Notification implements ShouldQueue
             ->markdown('vendor.notifications.order_customer_reply', [
                 'order' => $order,
                 'message' => $this->message,
-                'cart' => $this->cart,
-                'currency' => Currency::where('code', $order->currency)->first()
+                'cart' => $this->cart
             ]);
     }
 }

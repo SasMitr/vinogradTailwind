@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\Shop\Order\OrderIndexController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersCurrencyController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersDateBuildController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersDeliveryController;
+use App\Http\Controllers\Admin\Shop\Order\OrderSendMessageController;
 use App\Http\Controllers\Admin\Shop\Order\OrderShowController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersAdminNoteController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersSelectStatusController;
@@ -35,6 +36,7 @@ use App\Http\Controllers\Admin\Shop\Product\ProductResetCatalogController;
 use App\Http\Controllers\Admin\Shop\Product\ProductToggleStatusController;
 use App\Http\Controllers\Admin\Shop\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\Shop\User\UsersIndexController;
+use App\Http\Middleware\OrderClose;
 use Illuminate\Support\Facades\Route;
 
 // prefix('admin')
@@ -101,18 +103,23 @@ Route::as('orders.')->prefix('orders')->group(function () {
 
     Route::prefix('ajax')->as('ajax.')->group(function () {
         Route::patch('/admin-note/{order}', OrdersAdminNoteController::class)->name('admin-note');
-        Route::patch('/date_build/{order}', OrdersDateBuildController::class)->name('date_build');
-        Route::patch('/select_status/{order}', OrdersSelectStatusController::class)->name('select_status');
-        Route::patch('/status-treck-code/{order}', [OrdersTreckCodeController::class, 'statusTreckCode'])->name('status-treck-code');
-        Route::patch('/treck-code/{order}', [OrdersTreckCodeController::class, 'treckCode'])->name('treck-code');
-        Route::patch('/currency/{order}', OrdersCurrencyController::class)->name('currency');
-        Route::get('/delivery/{delivery}/order/{order}', [OrdersDeliveryController::class, 'show'])->name('delivery-form');
-        Route::patch('/delivery-update/{order}', [OrdersDeliveryController::class, 'update'])->name('delivery-update');
 
-        Route::patch('/order-item-update/{order}', OrderItemUpdateController::class)->name('order_item_update');
+        Route::middleware(OrderClose::class)->group(function () {
+            Route::patch('/date_build/{order}', OrdersDateBuildController::class)->name('date_build');
+            Route::patch('/select_status/{order}', OrdersSelectStatusController::class)->name('select_status');
+            Route::patch('/status-treck-code/{order}', [OrdersTreckCodeController::class, 'statusTreckCode'])->name('status-treck-code');
+            Route::patch('/treck-code/{order}', [OrdersTreckCodeController::class, 'treckCode'])->name('treck-code');
+            Route::patch('/currency/{order}', OrdersCurrencyController::class)->name('currency')->middleware(OrderClose::class);
+            Route::get('/delivery/{delivery}/order/{order}', [OrdersDeliveryController::class, 'show'])->name('delivery-form');
+            Route::patch('/delivery-update/{order}', [OrdersDeliveryController::class, 'update'])->name('delivery-update');
 
-        Route::get('/order-item-add/{order}', [OrderItemAddController::class, 'show'])->name('order_item_add_form'); //
-        Route::patch('/order-item-add/{order}', [OrderItemAddController::class, 'add'])->name('order_item_add');
+            Route::patch('/order-item-update/{order}', OrderItemUpdateController::class)->name('order_item_update');
+
+            Route::get('/order-item-add/{order}', [OrderItemAddController::class, 'show'])->name('order_item_add_form');
+            Route::patch('/order-item-add/{order}', [OrderItemAddController::class, 'add'])->name('order_item_add');
+
+            Route::post('/order-send-message/{order}', OrderSendMessageController::class)->name('order_send_message');
+        });
     });
 });
 

@@ -136,7 +136,7 @@
                 <h3>Валюта</h3>
             </div>
             <div class="border-b border-gray-300 p-5 text-gray-500 font-normal">
-{{--                            <h4 class="font-semibold text-dark dark:text-white">{{$currencys[$order->currency]}}</h4>--}}
+                @if(!$order->isCompleted())
                     <div x-data="{ dropdown: false}" class="dropdown ml-auto">
                         <a href="javaScript:;" class="h-3 items-center" @click="dropdown = !dropdown" @keydown.escape="dropdown = false">
                             {{$order->cost->currencyList()[$order->currency]}}
@@ -148,6 +148,9 @@
                             @endforeach
                         </ul>
                     </div>
+                @else
+                    {{$order->cost->currencyList()[$order->currency]}}
+                @endif
             </div>
         </div>
     </div>
@@ -212,6 +215,12 @@
                     </table>
 {{--                </div>--}}
         </div>
+</div>
+@endif
+
+@if($order->customer['email'])
+<div class="order-correspondence grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    @include('admin.shop.order.partials.order-correspondence')
 </div>
 @endif
 

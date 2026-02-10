@@ -60,7 +60,7 @@ class StatusService
     public function checkoutQuantity(Order $order): void
     {
         foreach ($order->items as $item){
-            $this->service->checkoutQuantity($item, $item->quantity);
+            $this->service->checkoutQuantity($item, $item->quantity, true);
         }
     }
 

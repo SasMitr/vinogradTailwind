@@ -1,6 +1,6 @@
 import * as responce from "#/common/resources.js";
 import * as toastr from "#/common/toastr.js";
-import * as modals from './modal.js'
+import Modal from './modal.js'
 
 import create from "./shop/product/create.js";
 import edit from "./shop/product/edit.js";
@@ -16,17 +16,16 @@ import addModificationForProduct from "./shop/product-modification/addModificati
 function modalControl(element) {
 
     try {
-        let modal = modals.get(element.dataset.width);
-
         responce.get(element.getAttribute('href'))
             .then(data => {
                 if (data.body) {
-                    modals.insert(modal, {
+                    const modal = new Modal (element.dataset.width);
+                    modal.insert({
                         body: data.body,
                         header: data.header
                     });
 
-                    switch (modals.getModule(modal)) {
+                    switch (modal.getModule()) {
                         case 'create':
                             create(modal);
                             break;
@@ -50,26 +49,29 @@ function modalControl(element) {
 
                             //    Навешиваем событие и отдаем в функцию обработчик что бы можно было отменить событие
                             //    (предотвращение клонирования событий)
-                            modal.addEventListener('click', addItemOrder);
+                            modal.get().addEventListener('click', addItemOrder);
                             break;
                     }
 
+                    modal.get().querySelector('#ok-btn').onclick = function () {
+                        removeEventListener('click', addItemOrder); //   отменяем обработчик
+                        modal.hide();
+                    };
+
                 } else if (data.errors) {
                     toastr.errors(data.errors);
+                } else if (data.message) {
+                    toastr.errors(data.message);
                 } else {
                     toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
                 }
+
             })
             .catch((xhr) => {
                 toastr.errors(xhr.responseText);
                 console.log(xhr.responseText);
             });
-        modal.querySelector('#ok-btn').onclick = function () {
-            removeEventListener('click', addItemOrder); //   отменяем обработчик
-            modals.hide(modal);
-            // modal.style.display = 'none';
 
-        };
 
         //  Закрытие окна по клику на подложку
         // window.onclick = function (e) {

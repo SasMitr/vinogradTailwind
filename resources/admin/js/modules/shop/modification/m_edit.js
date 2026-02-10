@@ -4,7 +4,7 @@ import * as toastr from "#/common/toastr.js";
 
 function m_create(modal) {
     try {
-        let form = modal.querySelector('form');
+        let form = modal.get().querySelector('form');
         const url = form.getAttribute('action');
         const id = form.getAttribute('data-id');
 
@@ -18,7 +18,7 @@ function m_create(modal) {
                 .then(data => {
                     if(data.success) {
                         document.querySelector('#row_' + id).innerHTML = data.success;
-                        modal.style.display = 'none';
+                        modal.hide();
                         toastr.success('Обновления успешно сохранены!');
 
                     } else if(data.errors){

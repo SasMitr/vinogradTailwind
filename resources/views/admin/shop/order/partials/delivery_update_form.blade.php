@@ -1,6 +1,6 @@
 <form method="POST" action="{{route('admin.orders.ajax.delivery-update', $order)}}" data-modules="deliveryUpdate" accept-charset="UTF-8" class="space-y-4">
-    @csrf
-    @method('patch')
+{{--    @csrf--}}
+{{--    @method('patch')--}}
     <input type="hidden" name="delivery[method]" value="{{$delivery->id}}">
 
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">

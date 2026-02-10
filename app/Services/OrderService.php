@@ -314,14 +314,14 @@ class OrderService
 
 
 
-    public function saveCorrespondence($orderId, $message)
-    {
-        OrderCorrespondence::create([
-            'created_at' => time(),
-            'message' => $message,
-            'order_id' => $orderId
-        ]);
-    }
+//    public function saveCorrespondence($orderId, $message)
+//    {
+//        OrderCorrespondence::create([
+//            'created_at' => time(),
+//            'message' => $message,
+//            'order_id' => $orderId
+//        ]);
+//    }
 
     public static function getOtherOrders($order)
     {

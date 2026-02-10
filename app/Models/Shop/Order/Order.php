@@ -143,8 +143,8 @@ class Order extends Model
     {
 //        dd($this->cost->raw());
         if (!isset($this->delivery['weight'])) {
-//            dd(Price::make($this->cost->raw() + $this->delivery['cost'], $this->currency));
-            return $this->cost->raw() + $this->delivery['cost'];
+            return Price::make($this->cost->raw() + $this->delivery['cost'], $this->currency);
+//            return $this->cost->raw() + $this->delivery['cost'];
 //            return $this->cost + $this->delivery['cost'];
         }
         $delivery = $delivery ?: DeliveryMethod::find($this->delivery['method_id']);

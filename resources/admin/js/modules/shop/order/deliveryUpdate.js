@@ -1,36 +1,34 @@
-import * as responce from "#/common/resources.js";
 import * as toastr from "#/common/toastr.js";
 import * as handler from "#/common/handlerErrors.js";
+import Post from "#/common/fetch/post.js";
 
 function deliveryUpdate(modal) {
     try {
-        let form = modal.querySelector('form');
+        let form = modal.get().querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+
             const url = form.getAttribute('action');
-            const formData = new FormData(form);
-            responce.post(url, formData)
-                .then(data => {
-                    if(data.success) {
-                        // console.log(data.orderCost);
-                        document.querySelector('#delivery-data').innerHTML = data.success;
-                        document.querySelector('#order-total-cost').innerHTML = data.orderCost;
 
-                        modal.style.display = 'none';
-                        toastr.success('Контактные данные обновлены');
+            const response = new Post (url);
 
-                    } else if(data.errors){
-
-                        toastr.errors(data.errors);
-                        handler.errorsHandler(data.errors, form);
-
-                    }else{
-                        toastr.errors('Что-то пошло не так. Перегрузите страницу и попробуйте снова.');
-                    }
-                }).catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr);
+            response.body ({
+                form: form,
+                data: {
+                    _method: 'patch'
+                }
             });
+            response.success = function () {
+                document.querySelector('#delivery-data').innerHTML = response.data.success;
+                document.querySelector('#order-total-cost').innerHTML = response.data.orderCost;
+
+                modal.hide();
+                toastr.success('Контактные данные обновлены');
+            }
+            response.error = function () {
+                handler.errorsHandler(response.data.errors, form);
+            }
+            response.send();
         });
     } catch (e) {}
 }
