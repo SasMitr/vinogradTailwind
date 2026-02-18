@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class OrderClose
+class OrderIsNotClose
 {
     /**
      * Handle an incoming request.
@@ -20,6 +20,6 @@ class OrderClose
         if(!$order->isCompleted()) {
             return $next($request);
         }
-        abort(422, 'Заказ закрыт.');
+        abort(422, '{"errors":"Заказ закрыт."}');
     }
 }

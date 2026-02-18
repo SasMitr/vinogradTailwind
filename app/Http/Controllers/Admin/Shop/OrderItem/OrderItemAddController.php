@@ -15,13 +15,15 @@ class OrderItemAddController extends Controller
     public function show(Order $order): array
     {
         try {
-            if ($order->isCompleted()) {
-                throw new \RuntimeException('Заказ закрыт.');
-            }
+//            if ($order->isCompleted()) {
+//                throw new \RuntimeException('Заказ закрыт.');
+//            }
             $products = Product::allProducts();
             return [
-                'body' => view('admin.shop.order.partials.order_item_add_form', compact('order', 'products'))->render(),
-                'header' => 'Добавляем в заказ'
+                'success' => [
+                    'body' => view('admin.shop.order.partials.order_item_add_form', compact('order', 'products'))->render(),
+                    'header' => 'Добавляем в заказ'
+                ]
             ];
 
         } catch (\Exception $e) {

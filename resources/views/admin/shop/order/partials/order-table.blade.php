@@ -1,4 +1,4 @@
-<div class="overflow-auto mt-5">
+<div class="overflow-auto mt-5 relative">
     <table class="min-w-[640px] border-b-2 border-gray-100">
         <thead>
         <tr class="text-left">
@@ -57,7 +57,7 @@
                 @endforeach
             </td>
             <td></td>
-            <td>
+            <td class="flex justify-end">
                 @if (!$order->isCompleted())
                 <a href="{{route('admin.orders.ajax.order_item_add_form', $order)}}" class="open-modal inline-block p-2.5 text-sky-500 transition-all duration-300 hover:text-white hover:bg-sky-500 bg-sky-50">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
@@ -65,10 +65,14 @@
                     </svg>
                 </a>
                 @endif
+
             </td>
         </tr>
         </tbody>
     </table>
+    <button class="copy-order cursor-pointer px-2 py-1 absolute top-12 right-0 text-gray-400 font-normal transition-all duration-300 text-sm hover:bg-gray-300 bg-gray-100" type="button" data-url="{{route('admin.orders.ajax.copy-order', $order)}}">
+        copy
+    </button>
 </div>
 <div class="space-y-4 mt-5">
     <div class="flex items-center justify-between font-semibold">

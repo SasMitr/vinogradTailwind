@@ -15,8 +15,10 @@ class ProductCreateController extends Controller
     {
         if($request->ajax()) {
             return response()->json([
-                'body' => view('admin.shop.product.partials._form', new AdminProductViewModel())->render(),
-                'header' => 'Добавить сорт'
+                'success' => [
+                    'body' => view('admin.shop.product.partials._form', new AdminProductViewModel())->render(),
+                    'header' => 'Добавить сорт'
+                ]
             ]);
         }
         return view('admin.shop.product.create', new AdminProductViewModel());

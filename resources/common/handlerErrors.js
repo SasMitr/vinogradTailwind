@@ -21,6 +21,7 @@ export function errorFormField (selector, items, form)
 
 export function errorsHandler(errors, form)
 {
+    if (!errors) return;
     const fieldList = Object.keys(errors);
 
     for (let item in fieldList) {

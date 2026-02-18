@@ -13,8 +13,10 @@ class UpdateModificationController extends Controller
     {
         if($request->ajax()){
             return response()->json([
-                'body' => view('admin.shop.modification.partials._form', ['modification' => $modification])->render(),
-                'header' => $modification->name . ' - редактировать'
+                'success' => [
+                    'body' => view('admin.shop.modification.partials._form', ['modification' => $modification])->render(),
+                    'header' => $modification->name . ' - редактировать'
+                ]
             ]);
         }
         return view('admin.shop.modification.update', ['modification' => $modification]);

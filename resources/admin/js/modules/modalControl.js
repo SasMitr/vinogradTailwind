@@ -1,5 +1,4 @@
-import * as responce from "#/common/resources.js";
-import * as toastr from "#/common/toastr.js";
+import Post from "#/common/fetch/post.js";
 import Modal from './modal.js'
 
 import create from "./shop/product/create.js";
@@ -13,67 +12,55 @@ import addItemOrder from "./shop/order/addItemOrder.js";
 
 import addModificationForProduct from "./shop/product-modification/addModificationForProduct.js";
 
-function modalControl(element) {
+export default function modalControl(element) {
 
     try {
-        responce.get(element.getAttribute('href'))
-            .then(data => {
-                if (data.body) {
-                    const modal = new Modal (element.dataset.width);
-                    modal.insert({
-                        body: data.body,
-                        header: data.header
-                    });
 
-                    switch (modal.getModule()) {
-                        case 'create':
-                            create(modal);
-                            break;
-                        case 'edit':
-                            edit(modal);
-                            break;
-                        case 'addModificationForProduct':
-                            addModificationForProduct(modal);
-                            break;
-                        case 'm_create':
-                            m_create(modal);
-                            break;
-                        case 'm_edit':
-                            m_edit(modal);
-                            break;
-                        case 'deliveryUpdate':
-                            deliveryUpdate(modal);
-                            break;
-                        case 'addItemOrder':
-                            datatablesInit();
-
-                            //    Навешиваем событие и отдаем в функцию обработчик что бы можно было отменить событие
-                            //    (предотвращение клонирования событий)
-                            modal.get().addEventListener('click', addItemOrder);
-                            break;
-                    }
-
-                    modal.get().querySelector('#ok-btn').onclick = function () {
-                        removeEventListener('click', addItemOrder); //   отменяем обработчик
-                        modal.hide();
-                    };
-
-                } else if (data.errors) {
-                    toastr.errors(data.errors);
-                } else if (data.message) {
-                    toastr.errors(data.message);
-                } else {
-                    toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-                }
-
-            })
-            .catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr.responseText);
+        const response = new Post (element.getAttribute('href'));
+        response.option.method = 'GET';
+        response.success = function () {
+            const modal = new Modal (element.dataset.width);
+            modal.insert({
+                body: response.data.success.body,
+                header: response.data.success.header
             });
 
+            switch (modal.getModule()) {
+                case 'create':
+                    create(modal);
+                    break;
+                case 'edit':
+                    edit(modal);
+                    break;
+                case 'addModificationForProduct':
+                    addModificationForProduct(modal);
+                    break;
+                case 'm_create':
+                    m_create(modal);
+                    break;
+                case 'm_edit':
+                    m_edit(modal);
+                    break;
+                case 'deliveryUpdate':
+                    deliveryUpdate(modal);
+                    break;
+                case 'addItemOrder':
+                    datatablesInit();
 
-        //  Закрытие окна по клику на подложку
+                    //    Навешиваем событие и отдаем в функцию обработчик что бы можно было отменить событие
+                    //    (предотвращение клонирования событий)
+                    modal.get().addEventListener('click', addItemOrder);
+                    break;
+            }
+
+            modal.get().querySelector('#ok-btn').onclick = function () {
+                removeEventListener('click', addItemOrder); //   отменяем обработчик
+                modal.hide();
+            };
+        }
+        response.send();
+
+        //  Закрытие окна по клику на подложку, если понадобится
         // window.onclick = function (e) {
         //     if (e.target == modal) {
         //         modal.style.display = 'none';
@@ -84,8 +71,6 @@ function modalControl(element) {
         console.error(err);
     }
 }
-
-export default modalControl;
 
 function datatablesInit() {
     new simpleDatatables.DataTable('#myTable', {

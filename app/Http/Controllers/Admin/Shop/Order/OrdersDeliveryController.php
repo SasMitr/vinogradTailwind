@@ -13,8 +13,10 @@ class OrdersDeliveryController extends Controller
     public function show(DeliveryMethod $delivery, Order $order)
     {
         return [
-            'body' => view('admin.shop.order.partials.delivery_update_form', ['delivery' => $delivery, 'order' => $order])->render(),
-            'header' => $delivery->name
+            'success' => [
+                'body' => view('admin.shop.order.partials.delivery_update_form', ['delivery' => $delivery, 'order' => $order])->render(),
+                'header' => $delivery->name
+            ]
         ];
     }
 

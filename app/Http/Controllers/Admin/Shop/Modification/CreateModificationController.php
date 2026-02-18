@@ -12,8 +12,10 @@ class CreateModificationController
     {
         if ($request->ajax()) {
             return response()->json([
-                'body' => view('admin.shop.modification.partials._form')->render(),
-                'header' => 'Добавить модификацию'
+                'success' => [
+                    'body' => view('admin.shop.modification.partials._form')->render(),
+                    'header' => 'Добавить модификацию'
+                ]
             ]);
         }
         return view('admin.shop.modification.create');

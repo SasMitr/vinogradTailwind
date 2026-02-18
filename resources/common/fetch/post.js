@@ -15,7 +15,7 @@ export default class Post
         }
     }
 
-    constructor(url, data=null) {
+    constructor(url) {
         this.url = url;
     }
 
@@ -45,8 +45,12 @@ export default class Post
 
                 } else if (this.data.message) {
                     if (this.error) this.error();
-                    toastr.errors(this.data.message);
-
+                    try {   //  Пытаемся вытащить кастомное сообщение
+                        const message = JSON.parse(this.data.message);
+                        toastr.errors(message.errors);
+                    } catch (e) {  //   По необходимости Можно вывести текст сообщения: toastr.errors(this.data.message);
+                        toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+                    }
                 } else {
                     if (this.failing) this.failing();
                     toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
@@ -57,5 +61,19 @@ export default class Post
                 toastr.errors(xhr);
                 console.log(xhr);
             });
+    }
+
+    urlParams(data) {
+        let search = window.location.search
+            ? window.location.search + '&'
+            : '?';
+        this.url = this.url +
+            data
+                ? search + new URLSearchParams(data).toString()
+                : search;
+
+        // return data
+        //     ? search + new URLSearchParams(data).toString()
+        //     : search;
     }
 }

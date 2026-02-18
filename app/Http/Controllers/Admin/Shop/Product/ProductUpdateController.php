@@ -15,8 +15,10 @@ class ProductUpdateController extends Controller
     {
         if($request->ajax()){
             return response()->json([
-                'body' => view('admin.shop.product.partials._form', new AdminProductViewModel($product))->render(),
-                'header' => $product->name . ' - редактировать'
+                'success' => [
+                    'body' => view('admin.shop.product.partials._form', new AdminProductViewModel($product))->render(),
+                    'header' => $product->name . ' - редактировать'
+                ]
             ]);
         }
        return view('admin.shop.product.update', new AdminProductViewModel($product));

@@ -3,20 +3,16 @@ import * as toastr from "#/common/toastr.js";
 
 export default function dateBuild(element) {
     try {
-        const value = element.value;
 
         const response = new Post (element.dataset.url);
         response.body ({
             data: {
                 _method: 'patch',
-                date_build: value
+                date_build: element.value
             }
         });
         response.success = function () {
-            value
-                ? element.previousElementSibling.classList.add('bg-yellow-300')
-                : element.previousElementSibling.classList.remove('bg-yellow-300')
-
+            element.previousElementSibling.classList.toggle('bg-yellow-300');
             toastr.success('Дата обновлена!');
         }
         response.send();

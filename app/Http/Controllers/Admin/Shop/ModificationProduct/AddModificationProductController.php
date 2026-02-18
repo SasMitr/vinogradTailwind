@@ -13,11 +13,13 @@ class AddModificationProductController extends Controller
         $modifications = Modification::query()->select('id', 'name')->get();
         if($request->ajax()) {
             return response()->json([
-                'body' => view('admin.shop.modification-product.partials._form', [
-                    'product_id' => $product_id,
-                    'modifications' => $modifications
-                ])->render(),
-                'header' => 'Добавить модификацию к продукту'
+                'success' => [
+                    'body' => view('admin.shop.modification-product.partials._form', [
+                        'product_id' => $product_id,
+                        'modifications' => $modifications
+                    ])->render(),
+                    'header' => 'Добавить модификацию к продукту'
+                ]
             ]);
         }
         return view('admin.shop.modification-product.addModificationProduct', [
