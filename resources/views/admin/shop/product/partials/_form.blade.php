@@ -190,16 +190,20 @@
 {{--                    @include('admin.shop.product._modification-input-item', ['product' => $product])--}}
 {{--                </div>--}}
 {{--            @endif--}}
+{{--            @dd($similars)--}}
+            @if($product)
             <div class="lg:col-span-12">
                 <h3 class="text-blue-400 p-2">Похожие сорта</h3>
-                <select class="form-control select2" multiple="multiple" name="props[similar][]"
-                        id="choices-multiple-remove-button">
+                <select class="form-control select2" multiple="multiple" id="choices-multiple-remove-button" data-add_url="{{route('admin.product.similar_add')}}" data-remove_url="{{route('admin.product.similar_remove')}}" data-product_id="{{$product->id}}">
                     <option value="">Выбрать похожие сорта</option>
+
                     @foreach($products as $id => $name)
-                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && isset($product->props['similar'])) ? $product->props['similar'] : [])))>{{$name}}</option>
+                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', $similars)))>{{$name}}</option>
+{{--                        <option value="{{$id}}" @selected(in_array($id, old('props.similar', (isset($product) && isset($product->props['similar'])) ? $product->props['similar'] : [])))>{{$name}}</option>--}}
                     @endforeach
                 </select>
             </div>
+            @endif
         </x-admin.shop.product.accordion-item>
 
         <x-admin.shop.product.accordion-item>

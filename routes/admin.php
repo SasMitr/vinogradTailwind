@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\Shop\Modification\UpdateModificationController;
 use App\Http\Controllers\Admin\Shop\ModificationProduct\AddModificationProductController;
 use App\Http\Controllers\Admin\Shop\ModificationProduct\CreateModificationProductController;
 use App\Http\Controllers\Admin\Shop\ModificationProduct\UpdateModificationProductController;
+use App\Http\Controllers\Admin\Shop\Order\CreateOrderController;
 use App\Http\Controllers\Admin\Shop\Order\OrderCopyController;
 use App\Http\Controllers\Admin\Shop\Order\OrderIndexController;
 use App\Http\Controllers\Admin\Shop\Order\OrdersCurrencyController;
@@ -34,9 +35,11 @@ use App\Http\Controllers\Admin\Shop\Product\ProductCreateController;
 use App\Http\Controllers\Admin\Shop\Product\ProductIndexController;
 use App\Http\Controllers\Admin\Shop\Product\ProductRemoveImgGallery;
 use App\Http\Controllers\Admin\Shop\Product\ProductResetCatalogController;
+use App\Http\Controllers\Admin\Shop\Product\ProductSimilarController;
 use App\Http\Controllers\Admin\Shop\Product\ProductToggleStatusController;
 use App\Http\Controllers\Admin\Shop\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\Shop\User\UsersIndexController;
+use App\Http\Controllers\SupportController;
 use App\Http\Middleware\OrderIsNotClose;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +67,9 @@ Route::as('product.')->prefix('product')->group(function () {
     Route::post('/remove-img-gallery', ProductRemoveImgGallery::class)->name('remove.img.gallery');
 
     Route::get('/reset-catalog', ProductResetCatalogController::class)->name('reset.catalog');
+
+    Route::patch('/similar-add', [ProductSimilarController::class, 'add'])->name('similar_add');
+    Route::patch('/similar-remove', [ProductSimilarController::class, 'remove'])->name('similar_remove');
 
     Route::as('comment.')->prefix('comment')->group(function () {
         Route::get('/', ProductCommentsIndexController::class)->name('index');
@@ -106,6 +112,9 @@ Route::as('orders.')->prefix('orders')->group(function () {
         Route::patch('/admin-note/{order}', OrdersAdminNoteController::class)->name('admin-note');
         Route::get('/copy-order/{order}', OrderCopyController::class)->name('copy-order');
 
+        Route::get('/create-order/{status}', [CreateOrderController::class, 'form'])->name('create-order.form');
+        Route::patch('/create-order/{status}', [CreateOrderController::class, 'create'])->name('create-order');
+
         Route::middleware(OrderIsNotClose::class)->group(function () {
             Route::patch('/date_build/{order}', OrdersDateBuildController::class)->name('date_build');
             Route::patch('/select_status/{order}', OrdersSelectStatusController::class)->name('select_status');
@@ -136,5 +145,7 @@ Route::as('users.')->prefix('users')->group(function () {
 Route::as('ckeditor.')->prefix('ckeditor')->group(function () {
     Route::post('/upload-image', CKeditorUploadImageController::class)->name('upload.image');
 });
+
+Route::get('/support', SupportController::class)->name('support');
 
 

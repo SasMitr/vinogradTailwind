@@ -8,6 +8,7 @@ use App\Models\Shop\Order\Order;
 use App\Models\Shop\Order\OrderItem;
 use App\Models\Shop\Product;
 use App\Services\OrderItemService;
+use App\Status\Status;
 use Illuminate\Http\Request;
 
 class OrderItemAddController extends Controller
@@ -15,9 +16,6 @@ class OrderItemAddController extends Controller
     public function show(Order $order): array
     {
         try {
-//            if ($order->isCompleted()) {
-//                throw new \RuntimeException('Заказ закрыт.');
-//            }
             $products = Product::allProducts();
             return [
                 'success' => [
@@ -35,7 +33,7 @@ class OrderItemAddController extends Controller
     {
         try {
             $order->load('items.modification.property');
-            $item = $service->addItem($request, $order);
+            $item = $service->addItem($request, $order, $order->current_status == Status::PRELIMINARY);
             $order->refresh();
 
             $items = OrderItem::getOrderSortedByItems($order);

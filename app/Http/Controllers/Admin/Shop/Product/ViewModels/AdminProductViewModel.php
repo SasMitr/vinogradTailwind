@@ -6,6 +6,7 @@ use App\Models\Shop\Category;
 use App\Models\Shop\Country;
 use App\Models\Shop\Product;
 use App\Models\Shop\Selection;
+use App\Models\Shop\Similar;
 use Spatie\ViewModels\ViewModel;
 
 class AdminProductViewModel extends ViewModel
@@ -17,6 +18,16 @@ class AdminProductViewModel extends ViewModel
     public function product(): Product|null
     {
         return $this->product ?? null;
+    }
+
+    public function similars(): array
+    {
+        if (!$this->product) return [];
+
+        $similars = Similar::getIdsSimilarProduct($this->product->id);
+        return $similars
+            ? $similars->values->diff([$this->product->id])->all()
+            : [];
     }
 
     public function products(): array

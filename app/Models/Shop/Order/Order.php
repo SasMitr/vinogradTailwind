@@ -3,6 +3,7 @@
 namespace App\Models\Shop\Order;
 
 use App\Casts\PriceCast;
+use App\Models\DTO\CustomerData;
 use App\Models\Shop\Collections\OrderCollection;
 use App\Models\Shop\DeliveryMethod;
 use App\Models\Shop\QueryBuilder\OrderQueryBuilder;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @method static Order|OrderQueryBuilder $query
@@ -81,14 +83,14 @@ class Order extends Model
         return new OrderQueryBuilder($query);
     }
 
-    public static function create($userId, DeliveryData $deliveryData, CustomerData $customerData, $cost, $note, $status): self
+    public static function create($deliveryData, $customerData, $cost, $note, $status): self
     {
         $order = new static();
-        $order->user_id = $userId;
+        $order->user_id = (Auth::check()) ? Auth::id() : null;
         $order->delivery = $deliveryData;
         $order->customer = $customerData;
         $order->cost = $cost;
-        $order->currency = realCurr()->code;
+//        $order->currency = realCurr()->code;
         $order->note = $note;
         $order->created_at = time();
         $order->addStatus($status);

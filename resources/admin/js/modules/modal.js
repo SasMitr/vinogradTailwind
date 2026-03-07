@@ -27,6 +27,10 @@ export default class Modal
         return this.modal;
     }
 
+    form () {
+        return this.modal.querySelector('form');
+    }
+
     show() {
         document.body.appendChild(this.modal);
         document.body.style.overflow = 'hidden';

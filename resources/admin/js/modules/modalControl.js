@@ -8,6 +8,7 @@ import m_create from "./shop/modification/m_create.js";
 import m_edit from "./shop/modification/m_edit.js";
 
 import deliveryUpdate from "./shop/order/deliveryUpdate.js";
+import createOrder from "./shop/order/createOrder.js";
 import addItemOrder from "./shop/order/addItemOrder.js";
 
 import addModificationForProduct from "./shop/product-modification/addModificationForProduct.js";
@@ -43,6 +44,9 @@ export default function modalControl(element) {
                     break;
                 case 'deliveryUpdate':
                     deliveryUpdate(modal);
+                    break;
+                case 'createOrder':
+                    createOrder(modal);
                     break;
                 case 'addItemOrder':
                     datatablesInit();

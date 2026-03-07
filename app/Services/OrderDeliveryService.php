@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Shop\Order\CustomerData;
+use App\Models\DTO\CustomerData;
 use App\Models\Shop\Order\DeliveryData;
 use App\Models\Shop\Order\Order;
 use Illuminate\Http\Request;
@@ -26,30 +26,25 @@ class OrderDeliveryService
         return $per;
     }
 
-    private function updateDeliveryData($request, $order)
+    private function updateDeliveryData(Request $request, Order $order): DeliveryData
     {
         $delivery = new DeliveryData($request->input('delivery.method'));
         $delivery->setAddress(
-            ($request->has('delivery.index')) ? $request->input('delivery.index') : $order->delivery['index'],
-            ($request->has('delivery.address')) ? $request->input('delivery.address') : $order->delivery['address']
+            $request->input('delivery.index', $order->delivery['index']),
+            $request->input('delivery.address', $order->delivery['address'])
         );
         $delivery->setWeight($order->getWeight());
         return $delivery;
     }
 
-    public function deliveryUpdate(Request $request, $order)
+    public function deliveryUpdate(Request $request, Order $order): Order
     {
         return DB::transaction(function() use ($request, $order)
         {
             $order->delivery = $this->updateDeliveryData($request, $order);
-            $order->customer = new CustomerData(
-                $request->input('customer.phone'),
-                $request->input('customer.name'),
-                $request->input('customer.email'),
-                $request->input('customer.other_phone')
-            );
+            $order->customer = CustomerData::fromRequest($request);
             $order->save();
-//            $this->orders->save($order);
+            return $order;
         });
     }
 }

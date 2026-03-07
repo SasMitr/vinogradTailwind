@@ -86,8 +86,8 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <a href="#" class="flex p-2.5 text-green-400 transition-all duration-300 hover:text-green-600 hover:underline">+ Новый</a>
-                <a href="#" class="flex p-2.5 text-yellow-400 transition-all duration-300 hover:text-yellow-600 hover:underline">+ Предварительный</a>
+                <a href="{{route('admin.orders.ajax.create-order.form', ['status' => \App\Status\Status::NEW])}}" class="open-modal p-2.5 text-green-400 transition-all duration-300 hover:text-green-600 hover:underline" data-width="600px">+ Новый</a>
+                <a href="{{route('admin.orders.ajax.create-order.form', ['status' => \App\Status\Status::PRELIMINARY])}}" class="open-modal p-2.5 text-yellow-400 transition-all duration-300 hover:text-yellow-600 hover:underline" data-width="600px">+ Предварительный</a>
             </div>
         </div>
 

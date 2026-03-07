@@ -13,6 +13,7 @@ import copyOrder from "./modules/shop/order/copyOrder.js";
 import quantityOrderInputEventChange from "./modules/shop/order/quantityOrderInputEventChange.js";
 
 window.addEventListener('DOMContentLoaded', function() {
+    // progClick();
 
     let content = document.querySelector('#admin-content');
     content.addEventListener('click', (e) => {
@@ -91,5 +92,11 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    //  Выполняем некоторый js код после програмного редиректа
+    if (localStorage.getItem("createOrder")) {
+        document.querySelector('.open-modal').click();
+        localStorage.removeItem("createOrder");
+    }
 
 });

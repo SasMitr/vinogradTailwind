@@ -1,10 +1,9 @@
 @if($product->adminModifications)
     @foreach($product->adminModifications as $modification)
-        {{--                                    @dd($modification, $order->items)--}}
         <div class="content-center">{{$modification->property->name}}</div>
         <div class="content-center">В наличии: <strong>{{$modification->quantity}}</strong> шт x {{$modification->price}}</div>
         <div>
-            @if($modification->quantity > 0)
+            @if($modification->quantity > 0 || $order->isPreliminsry())
                 <div class="flex">
                     <input class="pl-2 w-15 border border-gray-300" value="1" type="number" data-modification_id="{{$modification->id}}">
 

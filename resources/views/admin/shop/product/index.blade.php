@@ -48,7 +48,7 @@
             <tbody>
 
             @foreach($products as $product)
-                <tr id="row_{{$product->id}}">
+                <tr id="row_{{$product->id}}" class="text-gray-700">
                     @include('admin.shop.product.partials._tr')
                 </tr>
             @endforeach

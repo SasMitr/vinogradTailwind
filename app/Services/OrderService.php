@@ -4,13 +4,16 @@ namespace App\Services;
 
 //use App\cart\Cart;
 //use App\Mail\Admin\OrderAddMail;
+use App\Models\DTO\CustomerData;
 use App\Models\Shop\Modification;
-use App\Models\Shop\Order\CustomerData;
 use App\Models\Shop\Order\DeliveryData;
 use App\Models\Shop\Order\Order;
-use App\Models\Shop\Order\OrderCorrespondence;
 use App\Models\Shop\Order\OrderItem;
 use App\Status\Status;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 //use App\Notifications\OrderCustomerMail;
 //use App\Notifications\OrderReplyCustomerMail;
 //use App\Notifications\SendCodeMail;
@@ -18,10 +21,6 @@ use App\Status\Status;
 //use App\Repositories\ItemRepository;
 //use App\Repositories\ModificationRepository;
 //use App\Repositories\OrderRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -49,12 +48,12 @@ class OrderService
 //        $this->correspondence = $correspondence;
     }
 
-    public function createNewOrder($status = Status::NEW)
+    public function createNewOrder(Request $request, $status): Order
     {
         $order = Order::create(
-            Auth::id(),
+//            Auth::id(),
             new DeliveryData(),
-            new CustomerData(),
+            CustomerData::fromRequest($request),
             0,
             null,
             $status
@@ -150,13 +149,9 @@ class OrderService
         {
             $user_id = (Auth::check()) ? Auth::id() : null;
             $order = Order::create(
-                $user_id,
-                $this->newDeliveryData($request),
-                new CustomerData(
-                    $request->input('customer.phone'),
-                    $request->input('customer.name'),
-                    $request->input('customer.email')
-                ),
+//                $user_id,
+                $this->newDeliveryData($request), // new DeliveryData()
+                CustomerData::fromRequest($request),
                 $this->cart->getCost()->getTotal(),
                 $request->note,
                 Status::NEW

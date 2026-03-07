@@ -1,14 +1,16 @@
-// import * as responce from "../../../../../common/resources.js";
-// import * as handler from "../../../../../common/handlerErrors.js";
-// import * as toastr from "../../../../../common/toastr.js";
+import similar from './similar.js'
 
 export function choicesInit()
 {
-    new Choices('#choices-multiple-remove-button', {
-            allowHTML: true,
-            removeItemButton: true,
-        }
-    );
+    try {
+        new Choices('#choices-multiple-remove-button', {
+                allowHTML: true,
+                removeItemButton: true,
+            }
+        );
+        similar();
+    } catch (e) {}
+
     new Choices('#category_id', {allowHTML: true,});
     new Choices('#selection_id', {allowHTML: true,});
     new Choices('#country_id', {allowHTML: true,});
