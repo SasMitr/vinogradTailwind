@@ -27,7 +27,7 @@ class OrdersSelectStatusController extends Controller
                     'status_history' => view('admin.shop.order.partials.status_history', ['order' => $order])->render()
                 ]
             ];
-        } catch  (\RuntimeException $e) {
+        } catch  (\Exception $e) {
             return ['errors' => [$e->getMessage()]];
         }
     }

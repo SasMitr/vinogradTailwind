@@ -262,6 +262,13 @@ class Order extends Model
         return in_array($this->user_id, [2, 3, 4]);
     }
 
+    public function isGistoryFormed (): bool
+    {
+//        dd(collect($this->statuses_json), Status::FORMED, collect($this->statuses_json)->contains('value', Status::FORMED));
+//        return array_search(Status::FORMED, array_column($order->statuses_json, 'value'));
+        return collect($this->statuses_json)->contains('value', Status::FORMED);
+    }
+
     public function addStatus($value): void
     {
         if ($value == Status::NEW) {

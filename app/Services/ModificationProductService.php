@@ -2,49 +2,63 @@
 
 namespace App\Services;
 
-use App\Status\Status;
+use App\Models\Shop\Order\Order;
+use Illuminate\Database\Eloquent\Collection;
 
-class ModificationProductService
+readonly class ModificationProductService
 {
-    public function remove($order): void
+    public function __construct(private Order $order) {}
+
+    public function handler (string $action, Collection|array $items, int $quantity = null): void
     {
-        if ($order->isCompleted() || $order->isPreliminsry() || $order->isCancelled() || $order->isCancelledByCustomer()){
-            return;
+        if(!$this->order->isPreliminsry()) {
+            foreach ($items as $item) {
+                $this->$action($item, $quantity ?: $item->quantity);
+                $item->modification->save();
+            }
         }
-        foreach ($order->items as $item){
+    }
+
+    public function transitionToPre(Collection $items): void
+    {
+        foreach ($items as $item) {
             $this->returnQuantity($item, $item->quantity);
-            $this->returnInStock($order, $item, $item->quantity);
-        }
-    }
-
-    public function returnQuantity($item, $quantity): void
-    {
-        $item->modification->returnQuantity($quantity);
-        $item->modification->save();
-    }
-
-    public function checkoutQuantity($item, $quantity, $pre): void
-    {
-        $item->modification->checkout($quantity, $pre);
-        $item->modification->save();
-    }
-
-    public function returnInStock ($order, $item, $quantity): void
-    {
-        if($this->isFormed($order)) {
-            $item->modification->returnInStock($quantity);
+            $this->returnInStock($item, $item->quantity);
             $item->modification->save();
         }
     }
 
-    public function checkoutInStock($item, $quantity): void
+    public function remove($order): void
     {
-        $item->modification->checkoutInStock($quantity);
-        $item->modification->save();
+//        if (!$order->isCompleted() || !$order->isPreliminsry() || !$order->isCancelled() || !$order->isCancelledByCustomer()) {
+//            foreach ($order->items as $item){
+//                $this->returnQuantity($item, $item->quantity);
+//                $this->returnInStock($item, $item->quantity);
+//            }
+//        }
     }
 
-    private function isFormed ($order): bool
+    private function returnQuantity($item, $quantity): void
     {
-        return array_search(Status::FORMED, array_column($order->statuses_json, 'value'));
+        $item->modification->returnQuantity($quantity);
+    }
+
+    private function checkoutQuantity($item, $quantity): void
+    {
+        $item->modification->checkout($quantity, $this->order->isPreliminsry());
+    }
+
+    private function returnInStock ($item, $quantity): void
+    {
+        if($this->order->isGistoryFormed()) {
+            $item->modification->returnInStock($quantity);
+        }
+    }
+
+    private function checkoutInStock($item, $quantity): void
+    {
+        if($this->order->isGistoryFormed()) {
+            $item->modification->checkoutInStock($quantity);
+        }
     }
 }

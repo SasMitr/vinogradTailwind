@@ -2,6 +2,7 @@
 
 namespace App\Status;
 
+use App\Services\ModificationProductService;
 use Illuminate\Support\Arr;
 
 final class PreliminaryOrderState extends OrderState
@@ -22,8 +23,12 @@ final class PreliminaryOrderState extends OrderState
 
     function actions(): void
     {
-        $this->service->returnQuantity($this->order);
-        $this->service->returnInStock($this->order);
+        (new ModificationProductService ($this->order))
+            ->transitionToPre($this->order->items);
+
+//        $MPS = new ModificationProductService ($this->order);
+//        $MPS->handler('returnQuantity', $this->order->items);
+//        $MPS->handler('returnInStock', $this->order->items);
     }
 
     protected function getAllowedStatuses(): array

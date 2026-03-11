@@ -13,9 +13,6 @@ class OrderItemUpdateController extends Controller
     public function __invoke(OrdersItemUpdateRequest $request, OrderItemService $service, Order $order)
     {
         try {
-//            if ($order->isCompleted()) {
-//                throw new \RuntimeException('Заказ закрыт.');
-//            }
             $request->quantity == 0
                 ? $service->deleteItem($request, $order)
                 : $service->updateItem($request, $order);
@@ -28,7 +25,6 @@ class OrderItemUpdateController extends Controller
                 ]
             ];
 
-//            return redirect()->route('orders.edit', $order)->with('status', 'Изменения сохранены');
         } catch (\Exception $e) {
             return ['errors' => [$e->getMessage()]];
         }

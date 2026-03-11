@@ -29,11 +29,11 @@ class OrderItemAddController extends Controller
         }
     }
 
-    public function add(OrdersAddItemRequest $request, Order $order, OrderItemService $service)
+    public function add(OrdersAddItemRequest $request, Order $order, OrderItemService $service): array
     {
         try {
             $order->load('items.modification.property');
-            $item = $service->addItem($request, $order, $order->current_status == Status::PRELIMINARY);
+            $item = $service->addItem($request, $order);
             $order->refresh();
 
             $items = OrderItem::getOrderSortedByItems($order);

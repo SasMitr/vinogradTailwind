@@ -2,6 +2,7 @@
 
 namespace App\Status;
 
+use App\Services\ModificationProductService;
 use Illuminate\Support\Arr;
 
 final class CancelledOrderState extends OrderState
@@ -22,8 +23,9 @@ final class CancelledOrderState extends OrderState
 
     function actions(): void
     {
-        $this->service->returnQuantity($this->order);
-        $this->service->returnInStock($this->order);
+        $MPS = new ModificationProductService ($this->order);
+        $MPS->handler('returnQuantity', $this->order->items);
+        $MPS->handler('returnInStock', $this->order->items);
     }
 
     protected function getAllowedStatuses(): array

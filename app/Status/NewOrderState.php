@@ -2,6 +2,7 @@
 
 namespace App\Status;
 
+use App\Services\ModificationProductService;
 use Illuminate\Support\Arr;
 
 final class NewOrderState extends OrderState
@@ -23,7 +24,8 @@ final class NewOrderState extends OrderState
 
     public function actions(): void
     {
-        $this->service->checkoutQuantity($this->order);
+        (new ModificationProductService ($this->order))
+            ->handler('checkoutQuantity', $this->order->items);
     }
 
     public function humanValue(): string
