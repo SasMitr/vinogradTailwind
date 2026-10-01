@@ -61,4 +61,9 @@ readonly class ModificationProductService
             $item->modification->checkoutInStock($quantity);
         }
     }
+
+    private function test()
+    {
+        //
+    }
 }
