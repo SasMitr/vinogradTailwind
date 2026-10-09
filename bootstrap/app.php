@@ -18,13 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->as('shop.')
                 ->group(base_path('routes/shop.php'));
 
-            Route::middleware(['web', UserActive::class])
+            Route::middleware('user-active')
+//            Route::middleware(['web', UserActive::class])
                 ->prefix('cabinet')
                 ->as('cabinet.')
                 ->name('cabinet.')
                 ->group(base_path('routes/cabinet.php'));
 
-            Route::middleware(['web', Admin::class])
+            Route::middleware('is-admin')
+//            Route::middleware(['web', Admin::class])
                 ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
@@ -33,8 +35,17 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 //        $middleware->redirectGuestsTo(fn (Request $request) => route('shop.home'));
-        $middleware->validateCsrfTokens(except: [
+        $middleware->preventRequestForgery(except: [
             '/admin/ckeditor/upload-image'  //  отключить для маршрута csrf
+        ]);
+        $middleware->appendToGroup('user-active', [
+            'web',
+            UserActive::class,
+        ]);
+        $middleware->appendToGroup('is-admin', [
+            'web',
+            Admin::class,
+//            Illuminate\Auth\Middleware\EnsureEmailIsVerified::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
