@@ -2,7 +2,7 @@ import './plugins.init.js';
 import './main.js';
 import './index.js';
 
-import '../css/main.css';
+import '../../css/web/main.css';
 
 
 

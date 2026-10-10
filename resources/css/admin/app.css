@@ -2,7 +2,7 @@
 @import "./main.css";
 
 @source '../../resources/views/admin/**/*.blade.php';
-@source '../../resources/components/admin/**/*.blade.php';
+/*@source '../../resources/components/admin!**!*.blade.php';*/
 
 @source inline("bg-red-{300,400} border-red-{400,600}");
 @source inline("bg-green-{300,400} border-green-{400,600}");

@@ -18,7 +18,7 @@
     {{--    <link rel="shortcut icon" href="{{Storage::url('pics/img/logo/logo.svg')}}">--}}
     @if (file_exists(public_path('build/web/manifest.json')) || file_exists(public_path('hot')))
             {{ Vite::useBuildDirectory('/build/web') }}
-            @vite(['resources/web/css/app.css', 'resources/web/js/app.js'])
+            @vite(['resources/css/web/app.css', 'resources/js/web/app.js'])
         @else
         @endif
 

@@ -1,7 +1,7 @@
 import * as info from './components/handlerErrors.js';
-import * as responce from './components/resources';
-import cart from '../modules/cart';
-import compare from '../modules/compare';
+import * as responce from './components/resources.js';
+import cart from './cart.js';
+import compare from './compare.js';
 
 function gridList() {
     const gridLists = document.querySelectorAll('.grid-list');

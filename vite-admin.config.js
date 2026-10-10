@@ -6,8 +6,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/admin/css/app.css',
-                'resources/admin/js/app.js',
+                'resources/css/admin/app.css',
+                'resources/js/admin/app.js',
             ],
             refresh: true,
             buildDirectory: '/build/admin',
@@ -21,7 +21,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '#': '/resources',
+            '#': '/resources/js',
         },
     },
 });

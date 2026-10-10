@@ -1,4 +1,4 @@
-import * as responce from "./components/resources";
+import * as responce from "./components/resources.js";
 import * as info from "./components/handlerErrors.js";
 
 function exampleLength () {

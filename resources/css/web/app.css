@@ -5,7 +5,7 @@
 @source '../../resources/views/auth/**/*.blade.php';
 @source '../../resources/views/web/**/*.blade.php';
 @source '../../resources/views/components/**/*.blade.php';
-@source '../../resources/web/js/**/*.js';
+@source '../../resources/js/web/**/*.js';
 
 /*
 @source '..!**!*.js';

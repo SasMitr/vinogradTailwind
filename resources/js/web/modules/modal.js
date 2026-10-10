@@ -1,6 +1,6 @@
-import * as responce from './components/resources';
-import login from "./login";
-import register from "./register";
+import * as responce from './components/resources.js';
+import login from "./login.js";
+import register from "./register.js";
 
 function modal() {
 

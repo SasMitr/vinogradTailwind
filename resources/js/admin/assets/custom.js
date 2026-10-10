@@ -1,4 +1,4 @@
-import test from './myAlpin';
+import test from './myAlpin.js';
 
 document.addEventListener("alpine:init", () => {
     Alpine.data("collapse", () => ({

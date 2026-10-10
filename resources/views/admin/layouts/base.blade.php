@@ -14,7 +14,7 @@
     @yield('style')
 
     {{ Vite::useBuildDirectory('/build/admin') }}
-    @vite(['resources/admin/css/app.css', 'resources/admin/js/app.js'])
+    @vite(['resources/css/admin/app.css', 'resources/js/admin/app.js'])
 </head>
 
 <body x-data="main" class="font-inter text-base antialiased font-medium relative vertical" :class="[ $store.app.sidebar ? 'toggle-sidebar' : '', $store.app.fullscreen ? 'full' : '',$store.app.mode]">
