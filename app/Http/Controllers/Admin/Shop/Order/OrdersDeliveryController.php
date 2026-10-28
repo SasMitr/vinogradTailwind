@@ -10,7 +10,7 @@ use App\Services\OrderDeliveryService;
 
 class OrdersDeliveryController extends Controller
 {
-    public function show(DeliveryMethod $delivery, Order $order)
+    public function show(DeliveryMethod $delivery, Order $order) :array
     {
         return [
             'success' => [
@@ -20,7 +20,7 @@ class OrdersDeliveryController extends Controller
         ];
     }
 
-    public function update(CheckoutRequest $request, OrderDeliveryService $service, Order $order)
+    public function update(CheckoutRequest $request, OrderDeliveryService $service, Order $order) :array
     {
         try {
             $service->deliveryUpdate($request, $order);

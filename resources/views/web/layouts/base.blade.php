@@ -17,10 +17,10 @@
     {{--    <link rel="shortcut icon" href="{{asset('images/favicon.ico')}}">--}}
     {{--    <link rel="shortcut icon" href="{{Storage::url('pics/img/logo/logo.svg')}}">--}}
     @if (file_exists(public_path('build/web/manifest.json')) || file_exists(public_path('hot')))
-            {{ Vite::useBuildDirectory('/build/web') }}
-            @vite(['resources/css/web/app.css', 'resources/js/web/app.js'])
-        @else
-        @endif
+        {{ Vite::useBuildDirectory('/build/web') }}
+        @vite(['resources/css/web/app.css', 'resources/js/web/app.js'])
+    @else
+    @endif
 
 </head>
 
@@ -94,7 +94,7 @@
                             <label for="searchname" class="font-medium">Search:</label>
                             <div class="relative mt-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search absolute size-4 top-[9px] end-4"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                <input type="text" class="h-9 pe-10 rounded px-3 bg-white border border-gray-100 focus:ring-0 outline-none" name="s" id="searchItem" placeholder="Search...">
+                                <input type="text" class="h-9 pe-10 rounded px-3 bg-white border border-gray-100 focus:ring-0 outline-none w-full" name="s" id="searchItem" placeholder="Search...">
                             </div>
                         </div>
                     </form>

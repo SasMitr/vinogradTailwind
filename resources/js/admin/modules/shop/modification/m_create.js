@@ -1,40 +1,32 @@
-import * as responce from "#/common/resources.js";
+import Post from "#/common/fetch/post.js";
 import * as handler from "#/common/handlerErrors.js";
 import * as toastr from "#/common/toastr.js";
 
 function m_create(modal) {
     try {
+        modal.width = '700px';
+
         let form = modal.get().querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const url = form.getAttribute('action');
 
-            const formData = new FormData(form);
+            const response = new Post (form.getAttribute('action'));
+            response.body ({
+                form: form
+            });
+            response.success = function () {
+                let tr = document.createElement('tr');
+                tr.setAttribute('id', 'row_' + response.data.id);
+                tr.innerHTML = response.data.success;
+                document.querySelector('tbody').prepend(tr);
 
-            responce.post(url, formData)
-                .then(data => {
-                    if(data.success) {
-                        let tr = document.createElement('tr');
-                        tr.setAttribute('id', 'row_' + data.id);
-                        tr.innerHTML = data.success;
-                        document.querySelector('tbody').prepend(tr);
-
-                        modal.hide();
-                        toastr.success('Новая модификация добавлена!!');
-
-                    } else if(data.errors){
-
-                        handler.errorsHandler(data.errors, form);
-                        toastr.errors(data.errors);
-
-                    }else{
-                        console.log(data);
-                        toastr.errors('Что-то пошло не так. Перегрузите страницу и попробуйте снова.');
-                    }
-                }).catch((xhr) => {
-                    toastr.errors(xhr.responseText);
-                    console.log(xhr.responseText);
-                });
+                modal.hide();
+                toastr.success('Новая модификация добавлена!!');
+            }
+            response.error = function () {
+                handler.errorsHandler(response.data.errors, form);
+            }
+            response.send();
 
         });
 

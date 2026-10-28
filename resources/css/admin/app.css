@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./main.css";
 
+@source '../../resources/js/common/UI.js';
 @source '../../resources/views/admin/**/*.blade.php';
 /*@source '../../resources/components/admin!**!*.blade.php';*/
 

@@ -16,11 +16,12 @@ import addModificationForProduct from "./shop/product-modification/addModificati
 export default function modalControl(element) {
 
     try {
+        const modal = new Modal ();
 
         const response = new Post (element.getAttribute('href'));
         response.option.method = 'GET';
         response.success = function () {
-            const modal = new Modal (element.dataset.width);
+
             modal.insert({
                 body: response.data.success.body,
                 header: response.data.success.header

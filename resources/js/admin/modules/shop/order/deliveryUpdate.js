@@ -4,6 +4,8 @@ import Post from "#/common/fetch/post.js";
 
 function deliveryUpdate(modal) {
     try {
+        modal.width = '800px';
+
         let form = modal.get().querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();

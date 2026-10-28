@@ -4,6 +4,7 @@ import * as handler from "#/common/handlerErrors.js";
 
 export default function createOrder (modal) {
     try {
+        modal.width = '600px';
 
         let form = modal.form();
 

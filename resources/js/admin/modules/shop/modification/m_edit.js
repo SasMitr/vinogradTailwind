@@ -1,39 +1,32 @@
-import * as responce from "#/common/resources.js";
+import Post from "#/common/fetch/post.js";
 import * as handler from "#/common/handlerErrors.js";
 import * as toastr from "#/common/toastr.js";
 
 function m_create(modal) {
     try {
         let form = modal.get().querySelector('form');
-        const url = form.getAttribute('action');
         const id = form.getAttribute('data-id');
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const formData = new FormData(form);
-            formData.set('id', id);
-
-            responce.post(url, formData)
-                .then(data => {
-                    if(data.success) {
-                        document.querySelector('#row_' + id).innerHTML = data.success;
-                        modal.hide();
-                        toastr.success('Обновления успешно сохранены!');
-
-                    } else if(data.errors){
-                        toastr.errors(data.errors);
-                        handler.errorsHandler(data.errors, form);
-
-                    }else{
-                        toastr.errors('Что-то пошло не так. Перегрузите страницу и попробуйте снова.');
-                        console.log(data);
-                    }
-
-                }).catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr);
+            const response = new Post (form.getAttribute('action'));
+            response.body ({
+                form: form,
+                data: {
+                    id: id
+                }
             });
+            response.success = function () {
+                document.querySelector('#row_' + id).innerHTML = response.data.success;
+                modal.hide();
+                toastr.success('Обновления успешно сохранены!');
+            }
+            response.error = function () {
+                handler.errorsHandler(response.data.errors, form);
+            }
+            response.send();
+
         });
     } catch (e) {}
 }

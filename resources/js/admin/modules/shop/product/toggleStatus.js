@@ -1,27 +1,41 @@
-import * as responce from "#/common/resources.js";
+// import * as responce from "#/common/resources.js";
 import * as toastr from "#/common/toastr.js";
+import Post from "#/common/fetch/post.js";
 
 function toggleStatus(item) {
     try {
-        responce.get(item.getAttribute('data-url'))
-            .then(data => {
-                if (data.success) {
-                    document.querySelector('#open-link-' + data.success.id).classList.toggle("hidden");
-                    item.checked = !item.checked;
-                    toastr.success('Статус успешно переключен');
+        const response = new Post (item.getAttribute('data-url'));
+        response.option.method = 'GET';
+        response.success = function () {
+            document.querySelector('#open-link-' + data.success.id).classList.toggle("hidden");
+            item.checked = !item.checked;
+            toastr.success('Статус успешно переключен');
+        }
+        response.error = function () {
+            toastr.errors(data.errors);
+        }
+        response.send();
 
-                } else if (data.errors) {
-                    toastr.errors(data.errors);
 
-                } else {
-                    toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-                    console.log(data);
-                }
-            })
-            .catch((xhr) => {
-                toastr.errors(xhr.responseText);
-                console.log(xhr.responseText);
-            });
+        // responce.get(item.getAttribute('data-url'))
+        //     .then(data => {
+        //         if (data.success) {
+        //             document.querySelector('#open-link-' + data.success.id).classList.toggle("hidden");
+        //             item.checked = !item.checked;
+        //             toastr.success('Статус успешно переключен');
+        //
+        //         } else if (data.errors) {
+        //             toastr.errors(data.errors);
+        //
+        //         } else {
+        //             toastr.errors('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+        //             console.log(data);
+        //         }
+        //     })
+        //     .catch((xhr) => {
+        //         toastr.errors(xhr.responseText);
+        //         console.log(xhr.responseText);
+        //     });
     }
     catch (e) {}
 }
